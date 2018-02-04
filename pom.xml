@@ -92,14 +92,13 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <obfuscate>true</obfuscate>
+                    <outjar>L01.1-homework-obfuscated.jar</outjar>
                     <proguardVersion>4.10</proguardVersion>
                     <options>
                         <option>-keep public class ru.otus.l011.Main{public static void main(java.lang.String[]);}</option>
+                        <option>-dontwarn</option>
                     </options>
-                    <libs>
-                        <lib>${java.home}/lib/rt.jar</lib>
-                        <lib>${java.home}/lib/jce.jar</lib>
-                    </libs>
                 </configuration>
             </plugin>
 
