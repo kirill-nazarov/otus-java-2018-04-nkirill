@@ -13,6 +13,9 @@ import java.util.List;
  * mvn clean package
  * java -jar ./target/L01.1-homework.jar this, is,,a,test
  *
+ * To check if obfuscated version works
+ * java -jar ./target/L01.1-homework-obfuscated.jar this, is,,a,test
+ *
  */
 
 public class Main {
