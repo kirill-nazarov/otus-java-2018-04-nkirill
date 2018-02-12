@@ -1,81 +1,33 @@
 package ru.otus.l21;
 
-import java.lang.management.ManagementFactory;
-
 /**
- * VM options -Xmx512m -Xms512m
+ * To run:
+ * java -javaagent:target\L02.1-memory-1.0-SNAPSHOT.jar  -jar target\L02.1-memory-1.0-SNAPSHOT.jar
  * <p>
- * Runtime runtime = Runtime.getRuntime();
- * long mem = runtime.totalMemory() - runtime.freeMemory();
- * <p>
- * System.gc()
- * <p>
- * jconsole, connect to pid
  */
-//@SuppressWarnings({"RedundantStringConstructorCall", "InfiniteLoopStatement"})
+
 public class Main {
-    public static void main(String... args) throws InterruptedException {
+    public static void main(String... args) {
 
-        getEmptyObjectSize();
-        getEmptyArraySize();
-        getEmptyStringSize();
-        getEmptyStringSizeNoStringPool();
-
-    }
-
-
-    private static void getEmptyObjectSize() throws InterruptedException {
-        int size = 100_000;
-        System.gc();
-        Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
-        Object[] array = new Object[size];
-        for (int i = 0; i < size; i++) {
-            array[i] = new Object();
+        System.out.println("Memory size for 1 empty object");
+        printObjectSize(new Object());
+        System.out.println("Memory size for empty array for 1 object");
+        Object[] array = new Object[1];
+        printObjectSize(array);
+        System.out.println("Memory size for empty array for 10 object");
+        Object[] arrayOf10 = new Object[10];
+        printObjectSize(arrayOf10);
+        System.out.println("Memory size for String  object");
+        printObjectSize(new String(""));
+        System.out.println("Memory size for array of 10 String objects");
+        for (int i = 0; i < 10; i++) {
+            arrayOf10[i] = new String(new char[0]);
         }
-        long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty object = " + (mem2 - mem) / size + " bytes");
+        printObjectSize(arrayOf10);
     }
 
-    private static void getEmptyArraySize() throws InterruptedException {
-        int size = 10;
-        System.gc();
-        Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        Object[] array = new Object[10];
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for array = " + (mem) + " bytes");
-    }
+    private static void printObjectSize(Object obj) {
+        System.out.println("Object size = " + InstrumentationAgent.getObjectSize(obj) + " bytes");
 
-    private static void getEmptyStringSize() throws InterruptedException {
-        int size = 10_000_000;
-        System.gc();
-        Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
-        Object[] array = new Object[size];
-        for (int i = 0; i < size; i++) {
-            array[i] = new String(""); //String pool
-        }
-        long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty String in pool = " + (mem2 - mem) / size + " bytes");
-    }
-
-    private static void getEmptyStringSizeNoStringPool() throws InterruptedException {
-        int size = 10_000_000;
-        System.gc();
-        Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
-        Object[] array = new Object[size];
-        for (int i = 0; i < size; i++) {
-            array[i] = new String(new char[0]); //without String pool
-        }
-        long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty String :No String Pool = " + (mem2 - mem) / size + " bytes");
     }
 }

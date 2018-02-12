@@ -1,0 +1,1 @@
+Premain-class: ru.otus.l21.InstrumentationAgent
