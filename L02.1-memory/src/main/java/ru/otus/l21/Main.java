@@ -29,24 +29,28 @@ public class Main {
         System.gc();
         Thread.sleep(10);
         Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
         Object[] array = new Object[size];
+        long mem = runtime.totalMemory() - runtime.freeMemory();
+//        System.out.println(mem);
         for (int i = 0; i < size; i++) {
             array[i] = new Object();
         }
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty object = " + (mem2 - mem) / size + " bytes");
+//        System.out.println(mem2);
+        System.out.println("Object:" + (mem2 - mem) / size + " bytes");
     }
 
     private static void getEmptyArraySize() throws InterruptedException {
-        int size = 10;
+        int size = 100_000;
         System.gc();
         Thread.sleep(10);
         Runtime runtime = Runtime.getRuntime();
-        Object[] array = new Object[10];
         long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for array = " + (mem) + " bytes");
+//        System.out.println(mem);
+        Object[] array = new Object[size];
+        long mem2 = runtime.totalMemory() - runtime.freeMemory();
+//        System.out.println(mem2);
+        System.out.println("Object array:" + (mem2 - mem) / size + " bytes");
     }
 
     private static void getEmptyStringSize() throws InterruptedException {
@@ -54,14 +58,15 @@ public class Main {
         System.gc();
         Thread.sleep(10);
         Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
         Object[] array = new Object[size];
+        long mem = runtime.totalMemory() - runtime.freeMemory();
+//        System.out.println(mem);
         for (int i = 0; i < size; i++) {
             array[i] = new String(""); //String pool
         }
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty String in pool = " + (mem2 - mem) / size + " bytes");
+//        System.out.println(mem2);
+        System.out.println("String:" + (mem2 - mem) / size + " bytes");
     }
 
     private static void getEmptyStringSizeNoStringPool() throws InterruptedException {
@@ -69,13 +74,14 @@ public class Main {
         System.gc();
         Thread.sleep(10);
         Runtime runtime = Runtime.getRuntime();
-        long mem = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println(mem);
         Object[] array = new Object[size];
+        long mem = runtime.totalMemory() - runtime.freeMemory();
+//        System.out.println(mem);
         for (int i = 0; i < size; i++) {
             array[i] = new String(new char[0]); //without String pool
         }
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Memory size for 1 empty String :No String Pool = " + (mem2 - mem) / size + " bytes");
+//        System.out.println(mem2);
+        System.out.println("String(with new char[0]):" + (mem2 - mem) / size + " bytes");
     }
 }
