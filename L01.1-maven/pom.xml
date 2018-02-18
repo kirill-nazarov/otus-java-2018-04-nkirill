@@ -22,6 +22,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <com.google.guava.version>23.0</com.google.guava.version>
+        <java8.jdk.location>C:\Program Files\Java\jdk1.8.0_131\jre</java8.jdk.location>
     </properties>
 
     <dependencies>
@@ -100,7 +101,7 @@
                         <option>-dontwarn</option>
                     </options>
                     <libs>
-                        <lib>C:\Program Files\Java\jdk1.8.0_131\jre\lib\rt.jar</lib>
+                        <lib>${java8.jdk.location}\lib\rt.jar</lib>
                     </libs>
                 </configuration>
             </plugin>
