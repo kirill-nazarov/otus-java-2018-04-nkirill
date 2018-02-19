@@ -72,7 +72,6 @@ public class Main {
         Runtime runtime = Runtime.getRuntime();
         System.gc();
         Thread.sleep(10);
-        //Object[] array = new Object[SIZE];
         long mem = runtime.totalMemory() - runtime.freeMemory();
         for (int i = 0; i < SIZE; i++) {
             array[i] = new String(new char[0]); //without String pool
