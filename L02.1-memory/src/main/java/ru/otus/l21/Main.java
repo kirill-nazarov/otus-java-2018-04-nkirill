@@ -15,6 +15,9 @@ import java.lang.management.ManagementFactory;
 //@SuppressWarnings({"RedundantStringConstructorCall", "InfiniteLoopStatement"})
 public class Main {
 
+    private static final int SIZE = 10_000_000;
+    private static final Object[] array = new Object[SIZE];
+
 
     public static void main(String... args) throws InterruptedException {
 
@@ -28,55 +31,53 @@ public class Main {
 
 
     private static void getEmptyObjectSize() throws InterruptedException {
-        int size = 100_000;
+        Runtime runtime = Runtime.getRuntime();
         System.gc();
         Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        Object[] array = new Object[size];
         long mem = runtime.totalMemory() - runtime.freeMemory();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < SIZE; i++) {
             array[i] = new Object();
         }
+        System.gc();
+        Thread.sleep(10);
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Object:" + (mem2 - mem) / size + " bytes");
+        System.out.println("Object:" + (mem2 - mem) / SIZE + " bytes");
     }
 
     private static void getEmptyArraySize() throws InterruptedException {
-        int size = 100_000;
+        Runtime runtime = Runtime.getRuntime();
         System.gc();
         Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
         long mem = runtime.totalMemory() - runtime.freeMemory();
-        Object[] array = new Object[size];
+        Object[] arrayLocal = new Object[SIZE];
+        System.gc();
+        Thread.sleep(10);
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("Object reference in array:" + (mem2 - mem) / size + " bytes");
+        System.out.println("Object reference in array:" + (mem2 - mem) / SIZE + " bytes");
     }
 
     private static void getEmptyStringSize() throws InterruptedException {
-        int size = 10_000_000;
+        Runtime runtime = Runtime.getRuntime();
         System.gc();
         Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        Object[] array = new Object[size];
         long mem = runtime.totalMemory() - runtime.freeMemory();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < SIZE; i++) {
             array[i] = new String(""); //String pool
         }
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("String:" + (mem2 - mem) / size + " bytes");
+        System.out.println("String:" + (mem2 - mem) / SIZE + " bytes");
     }
 
     private static void getEmptyStringSizeNoStringPool() throws InterruptedException {
-        int size = 10_000_000;
+        Runtime runtime = Runtime.getRuntime();
         System.gc();
         Thread.sleep(10);
-        Runtime runtime = Runtime.getRuntime();
-        Object[] array = new Object[size];
+        //Object[] array = new Object[SIZE];
         long mem = runtime.totalMemory() - runtime.freeMemory();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < SIZE; i++) {
             array[i] = new String(new char[0]); //without String pool
         }
         long mem2 = runtime.totalMemory() - runtime.freeMemory();
-        System.out.println("String(with new char[0]):" + (mem2 - mem) / size + " bytes");
+        System.out.println("String(with new char[0]):" + (mem2 - mem) / SIZE + " bytes");
     }
 }
