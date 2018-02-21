@@ -1,19 +1,34 @@
 package ru.otus.l31;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
+
+
+    private static int DEFAULT_CAPACITY = 20;
+
+    private Object[] DATA;
+
+    private int size = 0;
+
+
+    public MyArrayList() {
+        DATA = new Object[DEFAULT_CAPACITY];
+    }
+
+    public MyArrayList(int size) {
+        this.size = size;
+        DATA = new Object[size];
+    }
+
     @Override
     public int size() {
-        return 0;
+        return size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size == 0;
     }
 
     @Override
@@ -23,7 +38,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new MyIterator();
     }
 
     @Override
@@ -38,7 +53,17 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        return false;
+        if (size + 1 > DATA.length) {
+            ensureCapacity();
+        }
+        DATA[size++] = t;
+        return true;
+    }
+
+    private void ensureCapacity() {
+        Object[] newDataArray = new Object[DATA.length + 1];
+        System.arraycopy(DATA, 0, newDataArray, 0, DATA.length);
+        DATA = newDataArray;
     }
 
     @Override
@@ -55,6 +80,7 @@ public class MyArrayList<T> implements List<T> {
     public boolean addAll(Collection<? extends T> c) {
         return false;
     }
+
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
@@ -78,12 +104,14 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        return null;
+        return (T) DATA[index];
     }
 
     @Override
     public T set(int index, T element) {
-        return null;
+        T oldValue = (T) DATA[index];
+        DATA[index] = element;
+        return oldValue;
     }
 
     @Override
@@ -116,8 +144,28 @@ public class MyArrayList<T> implements List<T> {
         return null;
     }
 
+
     @Override
     public List<T> subList(int fromIndex, int toIndex) {
         return null;
+    }
+
+
+
+
+    private class MyIterator implements Iterator<T> {
+
+        private int currentIndex;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size;
+        }
+
+        @Override
+        public T next() {
+            return (T) DATA[currentIndex++];
+        }
+
     }
 }
