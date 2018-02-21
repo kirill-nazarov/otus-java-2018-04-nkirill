@@ -25,11 +25,5 @@ public class Main {
         System.out.println(myList2.get(0));
         System.out.println(myList2.get(1));
 
-        Collections.sort(myList2);
-
-        System.out.println("Printing elements of sorted list");
-        System.out.println(myList2.get(0));
-        System.out.println(myList2.get(1));
-
     }
 }
