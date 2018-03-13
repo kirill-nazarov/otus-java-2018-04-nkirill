@@ -33,7 +33,6 @@ public class MyListIterator<T> extends MyIterator<T> implements ListIterator<T> 
         throw new UnsupportedOperationException();
     }
 
-    //todo implement set method
     @Override
     public void set(T t) {
         arrayList.set(cursor, t);
@@ -41,6 +40,6 @@ public class MyListIterator<T> extends MyIterator<T> implements ListIterator<T> 
 
     @Override
     public void add(T t) {
-
+        arrayList.add(cursor, t);
     }
 }
