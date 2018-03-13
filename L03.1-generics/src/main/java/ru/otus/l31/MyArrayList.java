@@ -38,12 +38,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new MyIterator();
+        return new MyIterator(this, 0);
     }
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        return DATA;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class MyArrayList<T> implements List<T> {
     }
 
     private void ensureCapacity() {
-        Object[] newDataArray = new Object[DATA.length + 1];
+        Object[] newDataArray = new Object[DATA.length + 10];
         System.arraycopy(DATA, 0, newDataArray, 0, DATA.length);
         DATA = newDataArray;
     }
@@ -109,8 +109,8 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T set(int index, T element) {
-        T oldValue = (T) DATA[index];
-        DATA[index] = element;
+        T oldValue = (T) DATA[index - 1];
+        DATA[index - 1] = element;
         return oldValue;
     }
 
@@ -136,12 +136,12 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public ListIterator<T> listIterator() {
-        throw new UnsupportedOperationException();
+        return new MyListIterator<>(this, 0);
     }
 
     @Override
     public ListIterator<T> listIterator(int index) {
-        throw new UnsupportedOperationException();
+        return new MyListIterator<>(this, index);
     }
 
 
@@ -151,19 +151,4 @@ public class MyArrayList<T> implements List<T> {
     }
 
 
-    private class MyIterator implements Iterator<T> {
-
-        private int currentIndex;
-
-        @Override
-        public boolean hasNext() {
-            return currentIndex < size;
-        }
-
-        @Override
-        public T next() {
-            return (T) DATA[currentIndex++];
-        }
-
-    }
 }
