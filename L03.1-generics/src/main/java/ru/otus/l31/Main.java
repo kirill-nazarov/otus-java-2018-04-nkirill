@@ -9,7 +9,6 @@ public class Main {
 
         for (int i = 20; i > 6; i--) {
             myList1.add(i);
-
         }
 
         Collections.addAll(myList1, 6, 5, 4, 3, 2, 1);
