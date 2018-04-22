@@ -2,7 +2,8 @@ package ru.otus.l21;
 
 /**
  * To run:
- * java -javaagent:target\L02.1-memory-1.0-SNAPSHOT.jar  -jar target\L02.1-memory-1.0-SNAPSHOT.jar
+ * for linux/mac os java -javaagent:target/L02.1-memory-1.0-SNAPSHOT.jar  -jar target/L02.1-memory-1.0-SNAPSHOT.jar
+ * for windows java -javaagent:target\L02.1-memory-1.0-SNAPSHOT.jar  -jar target\L02.1-memory-1.0-SNAPSHOT.jar
  * <p>
  */
 
