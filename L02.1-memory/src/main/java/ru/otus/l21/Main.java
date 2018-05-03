@@ -28,7 +28,7 @@ public class Main {
     }
 
     private static void printObjectSize(Object obj) {
-        System.out.println("Object size = " + InstrumentationAgent.getObjectSize(obj) + " bytes");
-
+        System.out.println("Shallow object size = " + InstrumentationAgent.getObjectSize(obj) + " bytes");
+        System.out.println("Deep object size = " + InstrumentationAgent.getDeepSizeOf(obj) + " bytes");
     }
 }
