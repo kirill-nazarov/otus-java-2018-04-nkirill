@@ -1,13 +1,15 @@
 package ru.otus.l31;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Main {
     public static void main(String[] args) {
 
+
         MyArrayList<Integer> myList1 = new MyArrayList<>();
 
-        for (int i = 20; i > 6; i--) {
+        for (int i = 11; i > 6; i--) {
             myList1.add(i);
         }
 
@@ -35,6 +37,5 @@ public class Main {
         for (Integer integer : myList1) {
             System.out.print(integer + " ");
         }
-
     }
 }

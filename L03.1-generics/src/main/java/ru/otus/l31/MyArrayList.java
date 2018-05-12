@@ -5,20 +5,24 @@ import java.util.*;
 public class MyArrayList<T> implements List<T> {
 
 
-    private static int DEFAULT_CAPACITY = 20;
+    private static final int DEFAULT_CAPACITY = 10;
+    private static final int INCREASE_CAPACITY = 1;
 
-    private Object[] DATA;
+    private Object[] data = {};
 
+    /**
+     * The size of the MyArrayList (the number of elements it contains).
+     */
     private int size = 0;
 
 
     public MyArrayList() {
-        DATA = new Object[DEFAULT_CAPACITY];
+        data = new Object[DEFAULT_CAPACITY];
     }
 
-    public MyArrayList(int size) {
-        this.size = size;
-        DATA = new Object[size];
+    public MyArrayList(int initSize) {
+        size = initSize;
+        data = new Object[size];
     }
 
     @Override
@@ -43,7 +47,7 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public Object[] toArray() {
-        return DATA;
+        return data;
     }
 
     @Override
@@ -53,17 +57,17 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        if (size + 1 > DATA.length) {
+        if (size + 1 > data.length) {
             ensureCapacity();
         }
-        DATA[size++] = t;
+        data[size++] = t;
         return true;
     }
 
     private void ensureCapacity() {
-        Object[] newDataArray = new Object[DATA.length + 10];
-        System.arraycopy(DATA, 0, newDataArray, 0, DATA.length);
-        DATA = newDataArray;
+        Object[] newDataArray = new Object[data.length + INCREASE_CAPACITY];
+        System.arraycopy(data, 0, newDataArray, 0, data.length);
+        data = newDataArray;
     }
 
     @Override
@@ -104,13 +108,13 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public T get(int index) {
-        return (T) DATA[index];
+        return (T) data[index];
     }
 
     @Override
     public T set(int index, T element) {
-        T oldValue = (T) DATA[index - 1];
-        DATA[index - 1] = element;
+        T oldValue = (T) data[index - 1];
+        data[index - 1] = element;
         return oldValue;
     }
 
