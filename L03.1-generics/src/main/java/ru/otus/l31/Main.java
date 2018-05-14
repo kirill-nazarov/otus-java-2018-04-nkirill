@@ -33,7 +33,7 @@ public class Main {
             System.out.print(integer + " ");
         }
 
-        Collections.sort(myList1);
+        Collections.sort(myList2);
 
         System.out.println("\nPrinting elements of sorted list");
         for (Integer integer : myList2) {
