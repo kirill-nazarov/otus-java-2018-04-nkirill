@@ -22,8 +22,8 @@ public class MyIterator<T> implements Iterator<T> {
 
     @Override
     public T next() {
-        Object[] elemendData = arrayList.toArray();
-        return (T) elemendData[cursor++];
+        Object[] elementData = arrayList.toArray();
+        return (T) elementData[cursor++];
     }
 }
 

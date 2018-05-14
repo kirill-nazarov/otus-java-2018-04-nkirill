@@ -4,35 +4,33 @@ import java.util.*;
 
 public class MyArrayList<T> implements List<T> {
 
-
-    private static final int DEFAULT_CAPACITY = 10;
-    private static final int INCREASE_CAPACITY = 1;
-
-    private Object[] data = {};
-
-    /**
-     * The size of the MyArrayList (the number of elements it contains).
-     */
-    private int size = 0;
+    private static final int INCREASE_CAPACITY_BY = 1;
+    private int capacity = 10;
+    private int numberOfItemsInList = 0;
+    private Object[] data;
 
 
     public MyArrayList() {
-        data = new Object[DEFAULT_CAPACITY];
+        data = new Object[capacity];
     }
 
-    public MyArrayList(int initSize) {
-        size = initSize;
-        data = new Object[size];
+    public MyArrayList(MyArrayList list) {
+        data = list.toArray();
+        numberOfItemsInList = list.size();
+    }
+
+    public MyArrayList(int initCapacity) {
+        data = new Object[initCapacity];
     }
 
     @Override
     public int size() {
-        return size;
+        return numberOfItemsInList;
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return numberOfItemsInList == 0;
     }
 
     @Override
@@ -57,17 +55,19 @@ public class MyArrayList<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        if (size + 1 > data.length) {
+        if (numberOfItemsInList >= capacity) {
             ensureCapacity();
         }
-        data[size++] = t;
+        data[numberOfItemsInList++] = t;
         return true;
     }
 
     private void ensureCapacity() {
-        Object[] newDataArray = new Object[data.length + INCREASE_CAPACITY];
-        System.arraycopy(data, 0, newDataArray, 0, data.length);
-        data = newDataArray;
+        int old_data_capacity = capacity;
+        capacity = capacity + INCREASE_CAPACITY_BY;
+        Object[] new_data_array = new Object[capacity];
+        System.arraycopy(data, 0, new_data_array, 0, old_data_capacity);
+        data = new_data_array;
     }
 
     @Override
