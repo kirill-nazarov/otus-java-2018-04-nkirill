@@ -74,12 +74,12 @@ public class ATM {
         int billFour = 0;
 
         int remainder = amount;
-        List<Integer> numbers = Arrays.asList(BILL_ONE, BILL_TWO, BILL_THREE, BILL_FOUR);
+        List<Integer> billsValues = getBillValues();
         List<Integer> change = new ArrayList<>();
-        for (int number : numbers) {
-            while (remainder >= number) {
-                remainder = remainder - number;
-                change.add(number);
+        for (int billValue : billsValues) {
+            while (remainder >= billValue) {
+                remainder = remainder - billValue;
+                change.add(billValue);
             }
         }
         for (int changeBill : change) {
@@ -88,15 +88,15 @@ public class ATM {
                 billOne++;
             }
             if (changeBill == BILL_TWO) {
-                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                cartridge2.setBillNumber(cartridge2.getBillNumber() - 1);
                 billTwo++;
             }
             if (changeBill == BILL_THREE) {
-                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                cartridge3.setBillNumber(cartridge3.getBillNumber() - 1);
                 billThree++;
             }
             if (changeBill == BILL_FOUR) {
-                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                cartridge4.setBillNumber(cartridge4.getBillNumber() - 1);
                 billFour++;
             }
         }
