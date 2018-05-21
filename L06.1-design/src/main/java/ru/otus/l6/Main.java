@@ -12,21 +12,17 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String... args) {
-        //depositCash
-        //withdrawCash
-        //getBalance
-
         ATM atm = new ATM();
         atm.fillWithInitialValues(100, 100, 100, 100);
-        System.out.println("Good day");
-        System.out.println("Initial ATM Balance = " + atm.getATMbalance());
-        System.out.println("Please choose ATM function: 1 - Deposit Cash 2 - Withdraw Cash");
+        print("Good day");
+        print("Initial ATM Balance = " + atm.getATMbalance());
+        print("Please choose ATM function: 1 - Deposit Cash 2 - Withdraw Cash");
         Scanner scanner = new Scanner(System.in);
         int chosenFunction = scanner.nextInt();
         if (chosenFunction == 1) {
-            System.out.println("You chose Deposit Cash");
-            System.out.println("Available deposit bills:" + atm.getBillValues());
-            System.out.println("Please choose deposit bill value from 1 to 4 accordingly");
+            print("You chose Deposit Cash");
+            print("Available deposit bills:" + atm.getBillValues());
+            print("Please choose deposit bill value from 1 to 4 accordingly");
             int chosenBillValue = scanner.nextInt();
             int billValue = 0;
             switch (chosenBillValue) {
@@ -43,19 +39,31 @@ public class Main {
                     billValue = atm.getBillValues().get(3);
                     break;
             }
-            System.out.println("Please choose deposited bills number");
+            print("Please choose deposited bills number");
             int chosenBillNumber = scanner.nextInt();
-            System.out.println("You deposited bills of value " + billValue + " in the amount of " + chosenBillNumber);
-            System.out.println("You deposited sum = " + billValue * chosenBillNumber);
+            print("You deposited bills of value " + billValue + " in the amount of " + chosenBillNumber);
+            print("You deposited sum = " + billValue * chosenBillNumber);
             atm.depositCash(chosenBillValue, chosenBillNumber);
-            System.out.println("ATM balance Now = " + atm.getATMbalance());
-            System.out.println("Good bye!");
+            print("ATM balance Now = " + atm.getATMbalance());
+            print("Good bye!");
         } else if (chosenFunction == 2) {
-            System.out.println("You chose to Withdraw Cash");
+            print("You chose to Withdraw Cash");
+            print("Please provide amount to withdraw");
+            int chosenAmount = scanner.nextInt();
+            if (chosenAmount > atm.getATMbalance()) {
+                print("You cannot withdraw more than ATM balance. Good bye!");
+            } else {
+                print("You receive " + atm.withDrawCash(chosenAmount) + " bills");
+                print("Final ATM Balance = " + atm.getATMbalance());
+            }
         } else {
-            System.out.println("You did not choose ATM function. Good bye!");
+            print("You did not choose ATM function. Good bye!");
         }
 
+    }
+
+    public static void print(String str) {
+        System.out.println(str);
     }
 
 }

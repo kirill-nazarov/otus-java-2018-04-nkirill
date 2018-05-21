@@ -47,9 +47,9 @@ public class Main {
     public static void main(String... args) throws Exception {
         System.out.println("Starting pid: " + ManagementFactory.getRuntimeMXBean().getName());
 
-        int size = 5 * 1000 * 1000;
-        //int size = 50 * 1000 * 1000;//for OOM with -Xms512m
-        //int size = 50 * 1000 * 100; //for small dump
+//        int size = 5 * 1000 * 1000;
+        int size = 50 * 1000 * 1000;//for OOM with -Xms512m
+        //int size = 5S0 * 1000 * 100; //for small dump
 
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
         ObjectName name = new ObjectName("ru.otus:type=Benchmark");

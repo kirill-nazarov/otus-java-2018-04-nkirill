@@ -1,5 +1,6 @@
 package ru.otus.l6;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
@@ -63,5 +64,44 @@ public class ATM {
         Integer[] array = {BILL_ONE, BILL_TWO, BILL_THREE, BILL_FOUR};
         List<Integer> list = Arrays.asList(array);
         return list;
+    }
+
+
+    public String withDrawCash(int amount) {
+        int billOne = 0;
+        int billTwo = 0;
+        int billThree = 0;
+        int billFour = 0;
+
+        int remainder = amount;
+        List<Integer> numbers = Arrays.asList(BILL_ONE, BILL_TWO, BILL_THREE, BILL_FOUR);
+        List<Integer> change = new ArrayList<>();
+        for (int number : numbers) {
+            while (remainder >= number) {
+                remainder = remainder - number;
+                change.add(number);
+            }
+        }
+        for (int changeBill : change) {
+            if (changeBill == BILL_ONE) {
+                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                billOne++;
+            }
+            if (changeBill == BILL_TWO) {
+                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                billTwo++;
+            }
+            if (changeBill == BILL_THREE) {
+                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                billThree++;
+            }
+            if (changeBill == BILL_FOUR) {
+                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+                billFour++;
+            }
+        }
+
+        return BILL_ONE + " x " + billOne + ", " + BILL_TWO + " x " + billTwo + ", " + BILL_THREE +
+                " x " + billThree + ", " + BILL_FOUR + " x " + billFour;
     }
 }
