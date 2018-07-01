@@ -54,6 +54,17 @@ public class DBServiceConnection implements DBService {
     }
 
     @Override
+    public <T extends UsersDataSet> void save(T user) throws SQLException {
+        //todo: implement me please
+    }
+
+    @Override
+    public <T extends UsersDataSet> T load(long id, Class<T> clazz) throws SQLException {
+        //todo: implement me please
+        return null;
+    }
+
+    @Override
     public void deleteTables() throws SQLException {
     }
 

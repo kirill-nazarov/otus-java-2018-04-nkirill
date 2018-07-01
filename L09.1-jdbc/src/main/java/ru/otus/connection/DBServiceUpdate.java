@@ -5,7 +5,7 @@ import ru.otus.executor.LogExecutor;
 import java.sql.SQLException;
 
 public class DBServiceUpdate extends DBServiceConnection {
-    private static final String CREATE_TABLE_USER = "create table if not exists user (id bigint auto_increment, name varchar(256), primary key (id))";
+    private static final String CREATE_TABLE_USER = "create table if not exists user (id bigint(20) not null auto_increment, name varchar(255), age int(3), primary key (id))";
     private static final String INSERT_USER = "insert into user (name) values ('%s')";
     private static final String DELETE_USER = "drop table user";
 
