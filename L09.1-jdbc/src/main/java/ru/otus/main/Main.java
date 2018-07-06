@@ -6,14 +6,6 @@ import ru.otus.transaction.DBServicePreparedTransactional;
 
 import java.util.List;
 
-/**
- * mysql> CREATE USER 'tully'@'localhost' IDENTIFIED BY 'tully';
- * mysql> GRANT ALL PRIVILEGES ON * . * TO 'tuly'@'localhost';
- * mysql> select user, host from mysql.user;
- * mysql> create database db_example;
- * mysql> SET GLOBAL time_zone = '+3:00';
- */
-
 public class Main {
     public static void main(String[] args) throws Exception {
         new Main().run();
@@ -23,13 +15,16 @@ public class Main {
         try (DBService dbService = new DBServicePreparedTransactional()) {
             System.out.println(dbService.getMetaData());
             dbService.prepareTables();
-            dbService.addUsers("tully", "sully");
-            int id = 1;
-            System.out.println(String.format("UserName with id = %d : %s", id, dbService.getUserName(id)));
-            List<String> names = dbService.getAllNames();
-            System.out.println("All names: " + names.toString());
-            List<UsersDataSet> users = dbService.getAllUsers();
-            System.out.println("All users: " + users.toString());
+            UsersDataSet user1 = new UsersDataSet("John", 22);
+            UsersDataSet user2 = new UsersDataSet("Ivan", 30);
+            dbService.save(user1);
+            dbService.save(user2);
+            long user1Id = user1.getId();
+            long user2Id = user2.getId();
+            UsersDataSet user1fromDb = dbService.load(user1Id, UsersDataSet.class);
+            UsersDataSet user2fromDb = dbService.load(user2Id, UsersDataSet.class);
+            System.out.println("User1 data loaded from DB:" + user1fromDb.toString());
+            System.out.println("User2 data loaded from DB:" + user2fromDb.toString());
             //dbService.deleteTables();
         }
     }

@@ -1,5 +1,6 @@
 package ru.otus.connection;
 
+import ru.otus.base.UsersDataSet;
 import ru.otus.executor.LogExecutor;
 
 import java.sql.SQLException;
@@ -30,5 +31,21 @@ public class DBServiceUpdate extends DBServiceConnection {
         LogExecutor exec = new LogExecutor(getConnection());
         exec.execUpdate(DELETE_USER);
         System.out.println("Table dropped");
+    }
+
+    @Override
+    public <T extends UsersDataSet> void save(T user) throws SQLException {
+        LogExecutor exec = new LogExecutor(getConnection());
+        exec.execUpdate(DELETE_USER);
+        System.out.println("User added to DB");
+    }
+
+    @Override
+    public <T extends UsersDataSet> T load(long id, Class<T> clazz) throws SQLException {
+        return super.load(id, clazz);
+    }
+
+    private <T extends UsersDataSet> String getInsertUserString(T user) {
+        return null;
     }
 }
