@@ -1,24 +1,26 @@
 package ru.otus.l41;
 
-/**
- * Created by tully.
- */
+
+import java.util.ArrayList;
+import java.util.List;
+
 class Benchmark implements BenchmarkMBean {
-    private volatile int size = 0;
+    private volatile int size = 100;
 
     @SuppressWarnings("InfiniteLoopStatement")
-    void run() {
+    void run() throws InterruptedException {
 
+        List<String> array = new ArrayList<>();
         System.out.println("Starting the loop");
         while (true) {
-            int local = size;
-            Object[] array = new Object[local];
-            System.out.println("Array of size: " + array.length + " created");
-
-            for (int i = 0; i < local; i++) {
-                array[i] = new String(new char[0]);
+            for (int i = 0; i < size; i++) {
+                array.add(new String(new char[i]));
             }
-            System.out.println("Created " + local + " objects.");
+            System.out.println("Created " + size + " objects.");
+            for (int i = 0; i < size / 2; i++) {
+                array.remove(i);
+            }
+            Thread.sleep(1000);
         }
     }
 
@@ -31,5 +33,4 @@ class Benchmark implements BenchmarkMBean {
     public void setSize(int size) {
         this.size = size;
     }
-
 }
