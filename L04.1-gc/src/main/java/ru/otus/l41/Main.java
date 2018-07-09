@@ -11,7 +11,8 @@ import java.lang.management.ManagementFactory;
 -XX:+PrintGCDateStamps
 -Xloggc:./logs/serial_gc.log
 -XX:GCLogFileSize=1M
-======================-XX:+UseSerialGC
+======================
+-XX:+UseSerialGC
 -XX:+UseParallelGC
 -XX:+UseParallelOldGC
 -XX:+UseConcMarkSweepGC
