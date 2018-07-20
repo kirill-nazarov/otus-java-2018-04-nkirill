@@ -16,21 +16,30 @@ import java.util.TimerTask;
 
 class Benchmark implements BenchmarkMBean {
     private volatile int size = 100;
-    private static GcStats stats = new GcStats();
+    private static GcInfo gcInfo = new GcInfo();
 
     void run() throws InterruptedException {
 
         installGCMonitoring();
 
-        TimerTask task = new TimerTask() {
+        //Print GC data every 60 seconds
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
             @Override
             public void run() {
-                stats.printData();
+                gcInfo.printData();
             }
-        };
+        }, 0, 60000);
 
-        Timer timer = new Timer();
-        timer.schedule(task, 0, 10000);
+        //Exit the application after 2 minutes and 5 seconds
+        Timer t2 = new Timer();
+        t2.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.exit(0);
+            }
+        }, 125000);
+
 
         List<String> array = new ArrayList<>();
         while (true) {
@@ -53,7 +62,7 @@ class Benchmark implements BenchmarkMBean {
                 public void handleNotification(Notification notification, Object handback) {
                     if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
                         GarbageCollectionNotificationInfo info = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
-                        stats.addNotification(info);
+                        gcInfo.addNotification(info);
                     }
                 }
             };
