@@ -3,6 +3,7 @@ package ru.otus.l41;
 import com.sun.management.GarbageCollectionNotificationInfo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GcInfo {
@@ -11,7 +12,8 @@ public class GcInfo {
     public GcInfo() {
     }
 
-    private List<GarbageCollectionNotificationInfo> notifications = new ArrayList<>();
+    private List<GarbageCollectionNotificationInfo> list = new ArrayList<>();
+    private List<GarbageCollectionNotificationInfo> notifications = Collections.synchronizedList(list);
 
     public void addNotification(GarbageCollectionNotificationInfo info) {
         notifications.add(info);
@@ -48,6 +50,7 @@ public class GcInfo {
 
             System.out.println(String.format("Average duration per minute : %s m",
                     ((float) gcTotalDuration / endTime)));
+
         }
     }
 }
