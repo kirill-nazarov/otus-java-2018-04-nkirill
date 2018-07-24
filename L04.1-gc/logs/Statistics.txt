@@ -1,45 +1,38 @@
-Application works for 2 minutes
-
 -Xmx256m -Xms256m -XX:+UseSerialGC 
 
-Young Generation. Name : Copy, Count 9, Total duration : 791 ms
-Total duration 0.013183334 m, End time : 1.3031 m
-Average duration per minute : 0.0101169 m
-
-Old Generation. Name : MarkSweepCompact, Count 9, Total duration : 791 ms
-Total duration 0.013183334 m, End time : 1.9771 m
-Average duration per minute : 0.0066680154 m
+Printing GC stats once a minute:
+Young Generation. Name : Copy, Count 6, Total duration : 120 ms, Avg duration : 20 ms
+Old Generation. Name : MarkSweepCompact, Count 1, Total duration : 50 ms, Avg duration : 50 ms
+Printing GC stats once a minute:
+Young Generation. Name : Copy, Count 4, Total duration : 43 ms, Avg duration : 10 ms
+Old Generation. Name : MarkSweepCompact, Count 8, Total duration : 564 ms, Avg duration : 70 ms
 
 
 -Xmx256m -Xms256m -XX:+UseParallelGC
 
-Young Generation. Name : PS Scavenge, Count 13, Total duration : 2331 ms
-Total duration 0.038850002 m, End time : 1.2397168 m
-Average duration per minute : 0.031337805 m
-
-Old Generation. Name : PS MarkSweep, Count 49, Total duration : 2331 ms
-Total duration 0.038850002 m, End time : 1.7290499 m
-Average duration per minute : 0.022468986 m
+Printing GC stats once a minute:
+Young Generation. Name : PS Scavenge, Count 9, Total duration : 86 ms, Avg duration : 9 ms
+Old Generation. Name : PS MarkSweep, Count 2, Total duration : 81 ms, Avg duration : 40 ms
+Printing GC stats once a minute:
+Young Generation. Name : PS Scavenge, Count 4, Total duration : 19 ms, Avg duration : 4 ms
+Old Generation. Name : PS MarkSweep, Count 43, Total duration : 1834 ms, Avg duration : 42 ms
 
 -Xmx256m -Xms256m -XX:+UseConcMarkSweepGC
 
-Young Generation. Name : ParNew, Count 15, Total duration : 30147 ms
-Total duration 0.50245 m, End time : 1.9570833 m
-Average duration per minute : 0.25673407 m
-
-Old Generation. Name : ConcurrentMarkSweep, Count 32, Total duration : 30147 ms
-Total duration 0.50245 m, End time : 1.9935167 m
-Average duration per minute : 0.25204203 m
+Printing GC stats once a minute:
+Young Generation. Name : ParNew, Count 6, Total duration : 166 ms, Avg duration : 27 ms
+Old Generation. Name : ConcurrentMarkSweep, Count 2, Total duration : 4223 ms, Avg duration : 2111 ms
+Printing GC stats once a minute:
+Young Generation. Name : ParNew, Count 8, Total duration : 109 ms, Avg duration : 13 ms
+Old Generation. Name : ConcurrentMarkSweep, Count 32, Total duration : 16575 ms, Avg duration : 517 ms
 
 -Xmx256m -Xms256m  -XX:+UseG1GC
 
-Young Generation. Name : G1 Young Generation, Count 44, Total duration : 430 ms
-Total duration 0.007166667 m, End time : 1.9931666 m
-Average duration per minute : 0.0035956183 m
-
-Old Generation. Name : G1 Old Generation, Count 2, Total duration : 430 ms
-Total duration 0.007166667 m, End time : 1.9421333 m
-Average duration per minute : 0.0036901003 m
+Printing GC stats once a minute:
+Young Generation. Name : G1 Young Generation, Count 12, Total duration : 93 ms, Avg duration : 7 ms
+Printing GC stats once a minute:
+Young Generation. Name : G1 Young Generation, Count 31, Total duration : 137 ms, Avg duration : 4 ms
+Old Generation. Name : G1 Old Generation, Count 2, Total duration : 174 ms, Avg duration : 87 ms
 
 
 
