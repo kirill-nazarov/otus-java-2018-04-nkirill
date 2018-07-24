@@ -31,14 +31,14 @@ class Benchmark implements BenchmarkMBean {
             }
         }, 60000, 60000);
 
-        //Exit the application after 3 minutes and 5 seconds
+        //Exit the application after 2 minutes and 5 seconds
         Timer t2 = new Timer();
         t2.schedule(new TimerTask() {
             @Override
             public void run() {
                 System.exit(0);
             }
-        }, 185000);
+        }, 125000);
 
 
         List<String> array = new ArrayList<>();
