@@ -1,6 +1,6 @@
 package ru.otus.l5.framework;
 
-class TestException extends Error {
+public class TestException extends Exception {
 
     TestException(final String message) {
         super(message);

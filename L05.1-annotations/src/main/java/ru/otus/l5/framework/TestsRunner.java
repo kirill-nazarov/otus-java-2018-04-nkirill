@@ -55,7 +55,6 @@ public class TestsRunner {
     }
 
     private static void executeMethodsInClass(Class clazz) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        Object instance = ReflectionHelper.instantiate(clazz);
         Method[] methods = clazz.getMethods();
         List<Method> list = Arrays.asList(methods);
         List<Method> beforeList = new ArrayList<>();
@@ -65,27 +64,32 @@ public class TestsRunner {
         for (Method m : list) {
             if (m.isAnnotationPresent(Before.class))
                 beforeList.add(m);
-        }
-        for (Method m : list) {
             if (m.isAnnotationPresent(Test.class))
                 testList.add(m);
-        }
-        for (Method m : list) {
             if (m.isAnnotationPresent(After.class))
                 afterList.add(m);
         }
 
-        for (Method m : beforeList) {
-            ReflectionHelper.callMethod(instance, m.getName());
+
+        try {
+            Object instance1 = ReflectionHelper.instantiate(clazz);
+            for (Method m : beforeList) {
+                ReflectionHelper.callMethod(instance1, m.getName());
+            }
+
+            Object instance2 = ReflectionHelper.instantiate(clazz);
+            for (Method m : testList) {
+                ReflectionHelper.callMethod(instance2, m.getName());
+            }
+
+            Object instance3 = ReflectionHelper.instantiate(clazz);
+            for (Method m : afterList) {
+                ReflectionHelper.callMethod(instance3, m.getName());
+            }
+        } catch (Exception ex) {
+            System.out.println("Exception caught during invocation of a test method. Exception details:" + ex.getCause().getLocalizedMessage());
         }
 
-        for (Method m : testList) {
-            ReflectionHelper.callMethod(instance, m.getName());
-        }
-
-        for (Method m : afterList) {
-            ReflectionHelper.callMethod(instance, m.getName());
-        }
 
     }
 
