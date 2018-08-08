@@ -73,9 +73,9 @@ public class TestsRunner {
         Object instance = ReflectionHelper.instantiate(clazz);
 
         try {
-            callBeforeMethods(instance, beforeList);
-            callTestMethods(instance, testList);
-            callAfterMethods(instance, afterList);
+            callMethods(instance, beforeList);
+            callMethods(instance, testList);
+            callMethods(instance, afterList);
         } catch (Exception ex) {
             System.out.println("Exception caught during invocation of a test method. Exception details:" + ex.getCause().getLocalizedMessage());
         }
@@ -83,25 +83,12 @@ public class TestsRunner {
 
     }
 
-    private static void callBeforeMethods(Object instance, List<Method> beforeList) throws Exception {
+    private static void callMethods(Object instance, List<Method> beforeList) throws Exception {
         for (Method m : beforeList) {
             ReflectionHelper.callMethod(instance, m.getName());
         }
 
     }
 
-    private static void callTestMethods(Object instance, List<Method> testList) throws Exception {
-        for (Method m : testList) {
-            ReflectionHelper.callMethod(instance, m.getName());
-        }
-
-    }
-
-    private static void callAfterMethods(Object instance, List<Method> afterList) throws Exception {
-        for (Method m : afterList) {
-            ReflectionHelper.callMethod(instance, m.getName());
-        }
-
-    }
 
 }
