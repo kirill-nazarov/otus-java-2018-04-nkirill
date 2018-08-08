@@ -83,8 +83,8 @@ public class TestsRunner {
 
     }
 
-    private static void callMethods(Object instance, List<Method> beforeList) throws Exception {
-        for (Method m : beforeList) {
+    private static void callMethods(Object instance, List<Method> methodList) throws Exception {
+        for (Method m : methodList) {
             ReflectionHelper.callMethod(instance, m.getName());
         }
 
