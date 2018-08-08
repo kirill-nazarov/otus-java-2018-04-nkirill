@@ -70,26 +70,37 @@ public class TestsRunner {
                 afterList.add(m);
         }
 
+        Object instance = ReflectionHelper.instantiate(clazz);
 
         try {
-            Object instance1 = ReflectionHelper.instantiate(clazz);
-            for (Method m : beforeList) {
-                ReflectionHelper.callMethod(instance1, m.getName());
-            }
-
-            Object instance2 = ReflectionHelper.instantiate(clazz);
-            for (Method m : testList) {
-                ReflectionHelper.callMethod(instance2, m.getName());
-            }
-
-            Object instance3 = ReflectionHelper.instantiate(clazz);
-            for (Method m : afterList) {
-                ReflectionHelper.callMethod(instance3, m.getName());
-            }
+            callBeforeMethods(instance, beforeList);
+            callTestMethods(instance, testList);
+            callAfterMethods(instance, afterList);
         } catch (Exception ex) {
             System.out.println("Exception caught during invocation of a test method. Exception details:" + ex.getCause().getLocalizedMessage());
         }
 
+
+    }
+
+    private static void callBeforeMethods(Object instance, List<Method> beforeList) throws Exception {
+        for (Method m : beforeList) {
+            ReflectionHelper.callMethod(instance, m.getName());
+        }
+
+    }
+
+    private static void callTestMethods(Object instance, List<Method> testList) throws Exception {
+        for (Method m : testList) {
+            ReflectionHelper.callMethod(instance, m.getName());
+        }
+
+    }
+
+    private static void callAfterMethods(Object instance, List<Method> afterList) throws Exception {
+        for (Method m : afterList) {
+            ReflectionHelper.callMethod(instance, m.getName());
+        }
 
     }
 
