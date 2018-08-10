@@ -15,9 +15,7 @@ public class ATM {
     public void depositCash(int billValue, int billNumber) {
         for (CashCartridge cartridge : cartridges) {
             if (cartridge.getBillValue() == billValue) {
-                int numberInCartridge = cartridge.getBillNumber();
-                int newNumberInCartridge = numberInCartridge + billNumber;
-                cartridge.setBillNumber(newNumberInCartridge);
+                cartridge.setBillNumber(cartridge.getBillNumber() + billNumber);
             }
         }
 
@@ -28,7 +26,6 @@ public class ATM {
         for (CashCartridge cartridge : cartridges) {
             int cartridgeBalance = cartridge.getBillNumber() * cartridge.getBillValue();
             balance = balance + cartridgeBalance;
-
         }
         return balance;
     }
