@@ -8,6 +8,7 @@ package ru.otus.l6;
     • выдавать сумму остатка денежных средств
  */
 
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -53,7 +54,7 @@ public class Main {
             if (chosenAmount > atm.getATMbalance()) {
                 print("You cannot withdraw more than ATM balance. Good bye!");
             } else {
-                print("You receive " + atm.withDrawCash(chosenAmount) + " bills");
+                print("You receive " + printBillsAmount(atm.withDrawCash(chosenAmount)) + " bills");
                 print("Final ATM Balance = " + atm.getATMbalance());
             }
         } else {
@@ -64,6 +65,17 @@ public class Main {
 
     public static void print(String str) {
         System.out.println(str);
+    }
+
+    public static String printBillsAmount(Map<Integer, Integer> bills) {
+        int billOne = bills.get(BILLS.BILL_ONE.getValue());
+        int billTwo = bills.get(BILLS.BILL_TWO.getValue());
+        int billThree = bills.get(BILLS.BILL_THREE.getValue());
+        int billFour = bills.get(BILLS.BILL_FOUR.getValue());
+
+        return BILLS.BILL_ONE.getValue() + " x " + billOne + ", " + BILLS.BILL_TWO.getValue() + " x " + billTwo + ", " + BILLS.BILL_THREE.getValue() +
+                " x " + billThree + ", " + BILLS.BILL_FOUR.getValue() + " x " + billFour;
+
     }
 
 }

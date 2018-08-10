@@ -1,16 +1,8 @@
 package ru.otus.l6;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class ATM {
-
-    private static final int BILL_ONE = 50;
-    private static final int BILL_TWO = 20;
-    private static final int BILL_THREE = 5;
-    private static final int BILL_FOUR = 1;
 
     private CashCartridge cartridge1;
     private CashCartridge cartridge2;
@@ -23,10 +15,10 @@ public class ATM {
         cartridge2 = new CashCartridge();
         cartridge3 = new CashCartridge();
         cartridge4 = new CashCartridge();
-        cartridge1.setBillValue(BILL_ONE);
-        cartridge2.setBillValue(BILL_TWO);
-        cartridge3.setBillValue(BILL_THREE);
-        cartridge4.setBillValue(BILL_FOUR);
+        cartridge1.setBillValue(BILLS.BILL_ONE.getValue());
+        cartridge2.setBillValue(BILLS.BILL_TWO.getValue());
+        cartridge3.setBillValue(BILLS.BILL_THREE.getValue());
+        cartridge4.setBillValue(BILLS.BILL_FOUR.getValue());
 
     }
 
@@ -61,13 +53,12 @@ public class ATM {
     }
 
     public List<Integer> getBillValues() {
-        Integer[] array = {BILL_ONE, BILL_TWO, BILL_THREE, BILL_FOUR};
-        List<Integer> list = Arrays.asList(array);
-        return list;
+        return BILLS.getValues();
     }
 
 
-    public String withDrawCash(int amount) {
+    public Map<Integer, Integer> withDrawCash(int amount) {
+        Map<Integer, Integer> bills = new HashMap<>();
         int billOne = 0;
         int billTwo = 0;
         int billThree = 0;
@@ -83,25 +74,29 @@ public class ATM {
             }
         }
         for (int changeBill : change) {
-            if (changeBill == BILL_ONE) {
+            if (changeBill == BILLS.BILL_ONE.getValue()) {
                 cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
                 billOne++;
             }
-            if (changeBill == BILL_TWO) {
+            if (changeBill == BILLS.BILL_TWO.getValue()) {
                 cartridge2.setBillNumber(cartridge2.getBillNumber() - 1);
                 billTwo++;
             }
-            if (changeBill == BILL_THREE) {
+            if (changeBill == BILLS.BILL_THREE.getValue()) {
                 cartridge3.setBillNumber(cartridge3.getBillNumber() - 1);
                 billThree++;
             }
-            if (changeBill == BILL_FOUR) {
+            if (changeBill == BILLS.BILL_FOUR.getValue()) {
                 cartridge4.setBillNumber(cartridge4.getBillNumber() - 1);
                 billFour++;
             }
         }
 
-        return BILL_ONE + " x " + billOne + ", " + BILL_TWO + " x " + billTwo + ", " + BILL_THREE +
-                " x " + billThree + ", " + BILL_FOUR + " x " + billFour;
+        bills.put(BILLS.BILL_ONE.getValue(), billOne);
+        bills.put(BILLS.BILL_TWO.getValue(), billTwo);
+        bills.put(BILLS.BILL_THREE.getValue(), billThree);
+        bills.put(BILLS.BILL_FOUR.getValue(), billFour);
+
+        return bills;
     }
 }
