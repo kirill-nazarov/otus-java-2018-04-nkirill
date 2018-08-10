@@ -8,19 +8,50 @@ package ru.otus.l6;
     • выдавать сумму остатка денежных средств
  */
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
+
+    public static final int DEPOSIT_CASH_FUNCTION = 1;
+    public static final int WITHDRAW_CASH_FUNCTION = 2;
+
+
     public static void main(String... args) {
-        ATM atm = new ATM();
-        atm.fillWithInitialValues(100, 100, 100, 100);
+
+        //Initializing ATM with initial values
+        CashCartridge cartridge1 = new CashCartridge();
+        CashCartridge cartridge2 = new CashCartridge();
+        CashCartridge cartridge3 = new CashCartridge();
+        CashCartridge cartridge4 = new CashCartridge();
+
+        cartridge1.setBillValue(BILLS.BILL_ONE.getValue());
+        cartridge2.setBillValue(BILLS.BILL_TWO.getValue());
+        cartridge3.setBillValue(BILLS.BILL_THREE.getValue());
+        cartridge4.setBillValue(BILLS.BILL_FOUR.getValue());
+
+        cartridge1.setBillNumber(100);
+        cartridge2.setBillNumber(100);
+        cartridge3.setBillNumber(100);
+        cartridge4.setBillNumber(100);
+
+        List<CashCartridge> cartridges = new ArrayList<>();
+
+        cartridges.add(cartridge1);
+        cartridges.add(cartridge2);
+        cartridges.add(cartridge3);
+        cartridges.add(cartridge4);
+
+        ATM atm = new ATM(cartridges);
+
         print("Good day");
         print("Initial ATM Balance = " + atm.getATMbalance());
         print("Please choose ATM function: 1 - Deposit Cash 2 - Withdraw Cash");
         Scanner scanner = new Scanner(System.in);
         int chosenFunction = scanner.nextInt();
-        if (chosenFunction == 1) {
+        if (chosenFunction == DEPOSIT_CASH_FUNCTION) {
             print("You chose Deposit Cash");
             print("Available deposit bills:" + atm.getBillValues());
             print("Please choose deposit bill value from 1 to 4 accordingly");
@@ -44,10 +75,10 @@ public class Main {
             int chosenBillNumber = scanner.nextInt();
             print("You deposited bills of value " + billValue + " in the amount of " + chosenBillNumber);
             print("You deposited sum = " + billValue * chosenBillNumber);
-            atm.depositCash(chosenBillValue, chosenBillNumber);
+            atm.depositCash(billValue, chosenBillNumber);
             print("ATM balance Now = " + atm.getATMbalance());
             print("Good bye!");
-        } else if (chosenFunction == 2) {
+        } else if (chosenFunction == WITHDRAW_CASH_FUNCTION) {
             print("You chose to Withdraw Cash");
             print("Please provide amount to withdraw");
             int chosenAmount = scanner.nextInt();

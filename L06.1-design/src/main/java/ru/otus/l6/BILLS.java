@@ -6,7 +6,7 @@ import java.util.List;
 public enum BILLS {
 
     BILL_ONE(50), BILL_TWO(20), BILL_THREE(5), BILL_FOUR(1);
-    private final int value;
+    private int value;
 
     private BILLS(int value) {
         this.value = value;
@@ -14,6 +14,10 @@ public enum BILLS {
 
     public int getValue() {
         return value;
+    }
+
+    public void setValue(int i) {
+        this.value = i;
     }
 
     public static List<Integer> getValues() {
