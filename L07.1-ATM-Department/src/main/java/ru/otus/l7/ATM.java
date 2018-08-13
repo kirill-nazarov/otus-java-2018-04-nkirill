@@ -1,106 +1,80 @@
 package ru.otus.l7;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ATM {
 
-    private static final int BILL_ONE = 50;
-    private static final int BILL_TWO = 20;
-    private static final int BILL_THREE = 5;
-    private static final int BILL_FOUR = 1;
-
-    private CashCartridge cartridge1;
-    private CashCartridge cartridge2;
-    private CashCartridge cartridge3;
-    private CashCartridge cartridge4;
+    private List<CashCartridge> cartridges;
 
 
-    public ATM() {
-        cartridge1 = new CashCartridge();
-        cartridge2 = new CashCartridge();
-        cartridge3 = new CashCartridge();
-        cartridge4 = new CashCartridge();
-        cartridge1.setBillValue(BILL_ONE);
-        cartridge2.setBillValue(BILL_TWO);
-        cartridge3.setBillValue(BILL_THREE);
-        cartridge4.setBillValue(BILL_FOUR);
-
+    public ATM(List<CashCartridge> cartridges) {
+        this.cartridges = cartridges;
     }
 
-    public void fillWithInitialValues(int billOneNumber, int billTwoNumber, int billThreeNumber, int billFourNumber) {
-        cartridge1.setBillNumber(billOneNumber);
-        cartridge2.setBillNumber(billTwoNumber);
-        cartridge3.setBillNumber(billThreeNumber);
-        cartridge4.setBillNumber(billFourNumber);
-    }
 
     public void depositCash(int billValue, int billNumber) {
-        switch (billValue) {
-            case 1:
-                cartridge1.setBillNumber(cartridge1.getBillNumber() + billNumber);
-                break;
-            case 2:
-                cartridge2.setBillNumber(cartridge2.getBillNumber() + billNumber);
-                break;
-            case 3:
-                cartridge3.setBillNumber(cartridge3.getBillNumber() + billNumber);
-                break;
-            case 4:
-                cartridge4.setBillNumber(cartridge4.getBillNumber() + billNumber);
-                break;
+        for (CashCartridge cartridge : cartridges) {
+            if (cartridge.getBillValue() == billValue) {
+                cartridge.setBillNumber(cartridge.getBillNumber() + billNumber);
+            }
         }
 
     }
 
     public int getATMbalance() {
-        return cartridge1.getCashCartridgeValue() + cartridge2.getCashCartridgeValue() + cartridge3.getCashCartridgeValue()
-                + cartridge4.getCashCartridgeValue();
+        int balance = 0;
+        for (CashCartridge cartridge : cartridges) {
+            int cartridgeBalance = cartridge.getBillNumber() * cartridge.getBillValue();
+            balance = balance + cartridgeBalance;
+        }
+        return balance;
     }
 
     public List<Integer> getBillValues() {
-        Integer[] array = {BILL_ONE, BILL_TWO, BILL_THREE, BILL_FOUR};
-        List<Integer> list = Arrays.asList(array);
-        return list;
+        return BILLS.getValues();
     }
 
 
-    public String withDrawCash(int amount) {
+    public Map<Integer, Integer> withDrawCash(int amount) {
+        Map<Integer, Integer> bills = new HashMap<>();
         int billOne = 0;
         int billTwo = 0;
         int billThree = 0;
         int billFour = 0;
-
         int remainder = amount;
         List<Integer> billsValues = getBillValues();
         List<Integer> change = new ArrayList<>();
+
         for (int billValue : billsValues) {
             while (remainder >= billValue) {
                 remainder = remainder - billValue;
                 change.add(billValue);
             }
         }
+
         for (int changeBill : change) {
-            if (changeBill == BILL_ONE) {
-                cartridge1.setBillNumber(cartridge1.getBillNumber() - 1);
+            for (CashCartridge cartridge : cartridges) {
+                if (cartridge.getBillValue() == changeBill) {
+                    cartridge.setBillNumber(cartridge.getBillNumber() - 1);
+                }
+            }
+            if (changeBill == BILLS.BILL_ONE.getValue()) {
                 billOne++;
             }
-            if (changeBill == BILL_TWO) {
-                cartridge2.setBillNumber(cartridge2.getBillNumber() - 1);
+            if (changeBill == BILLS.BILL_TWO.getValue()) {
                 billTwo++;
             }
-            if (changeBill == BILL_THREE) {
-                cartridge3.setBillNumber(cartridge3.getBillNumber() - 1);
+            if (changeBill == BILLS.BILL_THREE.getValue()) {
                 billThree++;
             }
-            if (changeBill == BILL_FOUR) {
-                cartridge4.setBillNumber(cartridge4.getBillNumber() - 1);
+            if (changeBill == BILLS.BILL_FOUR.getValue()) {
                 billFour++;
             }
         }
-
-        return BILL_ONE + " x " + billOne + ", " + BILL_TWO + " x " + billTwo + ", " + BILL_THREE +
-                " x " + billThree + ", " + BILL_FOUR + " x " + billFour;
+        bills.put(BILLS.BILL_ONE.getValue(), billOne);
+        bills.put(BILLS.BILL_TWO.getValue(), billTwo);
+        bills.put(BILLS.BILL_THREE.getValue(), billThree);
+        bills.put(BILLS.BILL_FOUR.getValue(), billFour);
+        return bills;
     }
 }
