@@ -30,11 +30,7 @@ public class ATM {
         return balance;
     }
 
-    public List<Integer> getBillValues() {
-        return BILLS.getValues();
-    }
-
-    public boolean checkAmountToWithdraw(int amount) {
+    private boolean checkAmountToWithdraw(int amount) {
         int availableAmount = 0;
         for (CashCartridge cartridge : cartridges) {
             availableAmount = availableAmount + cartridge.getCashCartridgeValue();
@@ -50,7 +46,7 @@ public class ATM {
         int billThree = 0;
         int billFour = 0;
         int remainder = amount;
-        List<Integer> billsValues = getBillValues();
+        List<Integer> billsValues = BILLS.getValues();
         List<Integer> change = new ArrayList<>();
 
         for (int billValue : billsValues) {

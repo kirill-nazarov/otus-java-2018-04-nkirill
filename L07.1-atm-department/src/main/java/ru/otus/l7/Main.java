@@ -5,7 +5,7 @@ package ru.otus.l7;
     ATM department may:
     -department may contain a few ATMs
     -department may collect all atm balances
-    -department may initialise initial ATM states
+    -department may initialise initial ATMs state
 */
 
 import java.util.ArrayList;
