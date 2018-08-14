@@ -34,8 +34,16 @@ public class ATM {
         return BILLS.getValues();
     }
 
+    public boolean checkAmountToWithdraw(int amount) {
+        int availableAmount = 0;
+        for (CashCartridge cartridge : cartridges) {
+            availableAmount = availableAmount + cartridge.getCashCartridgeValue();
+        }
+        return amount > availableAmount;
+    }
 
     public Map<Integer, Integer> withDrawCash(int amount) {
+        if (checkAmountToWithdraw(amount)) return null;
         Map<Integer, Integer> bills = new HashMap<>();
         int billOne = 0;
         int billTwo = 0;
