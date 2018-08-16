@@ -4,10 +4,46 @@ import java.util.*;
 
 public class ATM {
 
-    private List<CashCartridge> cartridges;
+    private int atmId;
+
+    private List<CashCartridge> cartridges = new ArrayList<>();
+    private List<CashCartridge> initialCartridgesValue = new ArrayList<>();
+
+    public ATM(int atmId, BILLS... bills) {
+        this.atmId = atmId;
+        for (BILLS bill : bills) {
+            CashCartridge cashCartridge = new CashCartridge(bill);
+            cartridges.add(cashCartridge);
+        }
+        //copy initial cartridges value
+        for (CashCartridge cartridge : cartridges) {
+            initialCartridgesValue.add(new CashCartridge(cartridge));
+        }
+    }
+
+    private List<CashCartridge> copyList(List<CashCartridge> list) {
+        return new ArrayList<CashCartridge>(list);
+    }
+
+    public ATM(int atmId, List<CashCartridge> cartridges) {
+        this.atmId = atmId;
+        this.cartridges = cartridges;
+    }
 
 
-    public ATM(List<CashCartridge> cartridges) {
+    public int getAtmId() {
+        return atmId;
+    }
+
+    public void setAtmId(int atmId) {
+        this.atmId = atmId;
+    }
+
+    public List<CashCartridge> getCartridges() {
+        return cartridges;
+    }
+
+    public void setCartridges(List<CashCartridge> cartridges) {
         this.cartridges = cartridges;
     }
 
@@ -80,5 +116,13 @@ public class ATM {
         bills.put(BILLS.BILL_THREE.getValue(), billThree);
         bills.put(BILLS.BILL_FOUR.getValue(), billFour);
         return bills;
+    }
+
+    public void restoreInitialAtmState() {
+        //copy initial cartridges value
+        cartridges = new ArrayList<>();
+        for (CashCartridge cartridge : initialCartridgesValue) {
+            cartridges.add(new CashCartridge(cartridge));
+        }
     }
 }

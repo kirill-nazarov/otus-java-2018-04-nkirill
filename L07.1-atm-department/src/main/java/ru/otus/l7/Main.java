@@ -1,70 +1,43 @@
 package ru.otus.l7;
 
 
-/*  TASK: Write ATM Department emulator.
-    ATM department may:
-    -department may contain a few ATMs
-    -department may collect all atm balances
-    -department may initialise initial ATMs state
+/*
+ДЗ 07. ATM Department
+Написать приложение ATM Department:
+• Приложение может содержать несколько ATM
+• Department может собирать сумму остатков со всех ATM
+• Department может инициировать событие – восстановить состояние всех ATM до начального.
+(начальные состояния у разных ATM могут быть разными)
 */
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
 
     public static void main(String... args) {
 
-        //Initializing ATM with initial values
-        CashCartridge cartridge1 = new CashCartridge();
-        CashCartridge cartridge2 = new CashCartridge();
-        CashCartridge cartridge3 = new CashCartridge();
-        CashCartridge cartridge4 = new CashCartridge();
+        ATM atm1 = new ATM(1, BILLS.BILL_ONE, BILLS.BILL_TWO, BILLS.BILL_THREE, BILLS.BILL_FOUR);
+        ATM atm2 = new ATM(2, BILLS.BILL_ONE, BILLS.BILL_TWO);
+        ATM atm3 = new ATM(3, BILLS.BILL_ONE, BILLS.BILL_THREE, BILLS.BILL_FOUR);
 
-        cartridge1.setBillValue(BILLS.BILL_ONE.getValue());
-        cartridge2.setBillValue(BILLS.BILL_TWO.getValue());
-        cartridge3.setBillValue(BILLS.BILL_THREE.getValue());
-        cartridge4.setBillValue(BILLS.BILL_FOUR.getValue());
+        AtmDepartment atmDepartment = new AtmDepartment();
+        atmDepartment.addAtm(atm1);
+        atmDepartment.addAtm(atm2);
+        atmDepartment.addAtm(atm3);
+        System.out.println(atmDepartment.getDepartmentBalance());
 
-        cartridge1.setBillNumber(100);
-        cartridge2.setBillNumber(100);
-        cartridge3.setBillNumber(100);
-        cartridge4.setBillNumber(100);
+        System.out.println("Withdraw 1000 from ATM 1");
+        atm1.withDrawCash(1000);
+        System.out.println(atmDepartment.getDepartmentBalance());
+        System.out.println("Deposit 200 to ATM 2");
+        atm2.depositCash(50, 4);
+        System.out.println(atmDepartment.getDepartmentBalance());
+        System.out.println("Withdraw 600 from ATM 3");
+        atm3.withDrawCash(600);
+        System.out.println(atmDepartment.getDepartmentBalance());
 
-        List<CashCartridge> cartridges = new ArrayList<>();
+        atmDepartment.restoreInitialDepartmentState();
 
-        cartridges.add(cartridge1);
-        cartridges.add(cartridge2);
-        cartridges.add(cartridge3);
-        cartridges.add(cartridge4);
-
-        ATM atm = new ATM(cartridges);
-
-        print(atm.getATMbalance());
-        atm.depositCash(50, 10);
-        print(atm.getATMbalance());
-        int amount1 = 200;
-        if (atm.withDrawCash(amount1) == null) {
-            print("Not enough bills for withdrawal");
-        } else {
-            print(atm.withDrawCash(amount1));
-        }
-        print(atm.getATMbalance());
-        int amount2 = 200000;
-        if (atm.withDrawCash(amount2) == null) {
-            print("Not enough bills for withdrawal");
-        } else {
-            print(atm.withDrawCash(amount2));
-        }
-        print(atm.getATMbalance());
-
+        System.out.println(atmDepartment.getDepartmentBalance());
 
     }
-
-
-    private static void print(Object obj) {
-        System.out.println(obj.toString());
-    }
-
 
 }
