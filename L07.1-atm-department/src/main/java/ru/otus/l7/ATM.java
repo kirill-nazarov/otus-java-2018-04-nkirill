@@ -50,7 +50,7 @@ public class ATM {
 
     public void depositCash(int billValue, int billNumber) {
         for (CashCartridge cartridge : cartridges) {
-            if (cartridge.getBillValue() == billValue) {
+            if (cartridge.getBill().getValue() == billValue) {
                 cartridge.setBillNumber(cartridge.getBillNumber() + billNumber);
             }
         }
@@ -60,7 +60,7 @@ public class ATM {
     public int getATMbalance() {
         int balance = 0;
         for (CashCartridge cartridge : cartridges) {
-            int cartridgeBalance = cartridge.getBillNumber() * cartridge.getBillValue();
+            int cartridgeBalance = cartridge.getBillNumber() * cartridge.getBill().getValue();
             balance = balance + cartridgeBalance;
         }
         return balance;
@@ -77,45 +77,40 @@ public class ATM {
     public Map<Integer, Integer> withDrawCash(int amount) {
         if (checkAmountToWithdraw(amount)) return null;
         Map<Integer, Integer> bills = new HashMap<>();
-        int billOne = 0;
-        int billTwo = 0;
-        int billThree = 0;
-        int billFour = 0;
-        int remainder = amount;
+
         List<Integer> billsValues = BILLS.getValues();
+
         List<Integer> change = new ArrayList<>();
 
+        //calculate change
         for (int billValue : billsValues) {
-            while (remainder >= billValue) {
-                remainder = remainder - billValue;
+            while (amount >= billValue) {
+                amount = amount - billValue;
                 change.add(billValue);
             }
         }
 
+        //calculate bills to withdraw number
+        for (int billValue : billsValues) {
+            int numberOfBills = 0;
+            for (int changeBill : change) {
+                if (billValue == changeBill) numberOfBills++;
+            }
+            bills.put(billValue, numberOfBills);
+
+        }
+
+        //remove withdrawn bills from cartridge in ATM
         for (int changeBill : change) {
             for (CashCartridge cartridge : cartridges) {
-                if (cartridge.getBillValue() == changeBill) {
+                if (cartridge.getBill().getValue() == changeBill) {
                     cartridge.setBillNumber(cartridge.getBillNumber() - 1);
                 }
             }
-            if (changeBill == BILLS.BILL_ONE.getValue()) {
-                billOne++;
-            }
-            if (changeBill == BILLS.BILL_TWO.getValue()) {
-                billTwo++;
-            }
-            if (changeBill == BILLS.BILL_THREE.getValue()) {
-                billThree++;
-            }
-            if (changeBill == BILLS.BILL_FOUR.getValue()) {
-                billFour++;
-            }
         }
-        bills.put(BILLS.BILL_ONE.getValue(), billOne);
-        bills.put(BILLS.BILL_TWO.getValue(), billTwo);
-        bills.put(BILLS.BILL_THREE.getValue(), billThree);
-        bills.put(BILLS.BILL_FOUR.getValue(), billFour);
+
         return bills;
+
     }
 
     public void restoreInitialAtmState() {

@@ -5,27 +5,28 @@ public class CashCartridge {
 
     private final int DEFAULT_BILL_NUMBER = 100;
 
-    private int billValue;
+    private BILLS bill;
+
     private int billNumber = DEFAULT_BILL_NUMBER;
 
     public CashCartridge() {
     }
 
     public CashCartridge(CashCartridge cartridge) {
-        this.billValue = cartridge.billValue;
+        this.bill = cartridge.bill;
         this.billNumber = cartridge.billNumber;
     }
 
-    public CashCartridge(BILLS bills) {
-        this.billValue = bills.getValue();
+    public CashCartridge(BILLS bill) {
+        this.bill = bill;
     }
 
-    public int getBillValue() {
-        return billValue;
+    public BILLS getBill() {
+        return bill;
     }
 
-    public void setBillValue(int billValue) {
-        this.billValue = billValue;
+    public void setBill(BILLS bill) {
+        this.bill = bill;
     }
 
     public int getBillNumber() {
@@ -37,6 +38,6 @@ public class CashCartridge {
     }
 
     public int getCashCartridgeValue() {
-        return billValue * billNumber;
+        return bill.getValue() * billNumber;
     }
 }
