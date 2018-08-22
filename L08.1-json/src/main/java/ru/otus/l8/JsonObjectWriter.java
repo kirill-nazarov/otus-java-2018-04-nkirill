@@ -1,12 +1,15 @@
 package ru.otus.l8;
 
+import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public class JsonWriter {
+public class JsonObjectWriter {
 
     public String toJson(Object obj) {
         if (obj == null) {
@@ -23,12 +26,29 @@ public class JsonWriter {
     private String convertToJson(Object obj) {
         if (isSimpleObject(obj)) {
             return JSONValue.toJSONString(obj);
-        } else return convertObjectToJson(obj);
+        }
+        return convertObjectToJson(obj);
     }
 
     private String convertObjectToJson(Object obj) {
-        //not implemented
-        return null;
+        JSONObject jsonObject = new JSONObject();
+
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        LinkedHashMap map = new LinkedHashMap();
+
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                map.put(field.getName(), field.get(obj));
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return jsonObject.toJSONString(map);
+
     }
 
 

@@ -6,8 +6,6 @@ public class CustomObject {
 
     private Integer number;
 
-    public CustomObject() {
-    }
 
     public CustomObject(String name, Integer number) {
         this.name = name;
@@ -21,4 +19,5 @@ public class CustomObject {
     public void setName(String name) {
         this.name = name;
     }
+
 }

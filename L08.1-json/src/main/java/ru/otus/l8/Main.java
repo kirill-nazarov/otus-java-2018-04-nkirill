@@ -15,7 +15,7 @@ public class Main {
         Gson gson = new Gson();
         System.out.println(gson.toJson("Some text"));
 
-        JsonWriter jsonWriter = new JsonWriter();
+        JsonObjectWriter jsonWriter = new JsonObjectWriter();
         System.out.println(jsonWriter.toJson("Some text"));
 
     }

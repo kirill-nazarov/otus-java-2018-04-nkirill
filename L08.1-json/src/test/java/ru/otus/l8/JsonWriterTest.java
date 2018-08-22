@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class JsonWriterTest {
 
     private Gson gson = new Gson();
-    private JsonWriter jsonWriter = new JsonWriter();
+    private JsonObjectWriter jsonWriter = new JsonObjectWriter();
 
     @Test
     public void writeNullObject() {
@@ -56,9 +56,7 @@ public class JsonWriterTest {
 
     @Test
     public void writeCustomObject() {
-        CustomObject object = new CustomObject("Some name", 1995);
-        System.out.println(gson.toJson(object));
-        System.out.println(jsonWriter.toJson(object));
+        CustomObject object = new CustomObject("New Name", 1995);
         assertEquals(gson.toJson(object), jsonWriter.toJson(object));
     }
 
