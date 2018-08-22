@@ -12,14 +12,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //TODO 1 Write JsonWriter
-        //TODO 2 Write JsonWriter Tests
-
         Gson gson = new Gson();
-        System.out.println(gson.toJson(null));
+        System.out.println(gson.toJson("Some text"));
 
         JsonWriter jsonWriter = new JsonWriter();
-        System.out.println(jsonWriter.toJson(null));
+        System.out.println(jsonWriter.toJson("Some text"));
 
     }
 
