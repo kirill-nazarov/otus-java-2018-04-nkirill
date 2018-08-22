@@ -6,13 +6,21 @@ package ru.otus.l8;
 Поддержите массивы объектов и примитивных типов, и коллекции из стандартной библиотеки.
  */
 
+import com.google.gson.Gson;
+
 public class Main {
 
     public static void main(String[] args) {
 
         //TODO 1 Write JsonWriter
         //TODO 2 Write JsonWriter Tests
-        System.out.println("Test");
+
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(null));
+
+        JsonWriter jsonWriter = new JsonWriter();
+        System.out.println(jsonWriter.toJson(null));
+
     }
 
 }
