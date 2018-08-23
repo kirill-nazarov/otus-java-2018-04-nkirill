@@ -21,7 +21,7 @@ public class JsonObjectWriter {
         return convertToJson(obj);
     }
 
-    public LinkedHashMap toJsonSubObject(LinkedHashMap outsideMap, Object obj) {
+    public LinkedHashMap toJsonSubObject(Object obj) {
 
         Class<?> clazz = obj.getClass();
         Field[] fields = clazz.getDeclaredFields();
@@ -36,7 +36,7 @@ public class JsonObjectWriter {
                 } else if (field.get(obj).getClass().isArray()) {
                     map.put(field.getName(), convertArrayToList(field.get(obj)));
                 } else {
-                    map.put(field.getName(), toJsonSubObject(outsideMap, field.get(obj)));
+                    map.put(field.getName(), toJsonSubObject(field.get(obj)));
                 }
 
             } catch (IllegalAccessException ex) {
@@ -68,7 +68,7 @@ public class JsonObjectWriter {
 
         LinkedHashMap map = new LinkedHashMap();
 
-        map = toJsonSubObject(map, obj);
+        map = toJsonSubObject(obj);
 
         return jsonObject.toJSONString(map);
 
