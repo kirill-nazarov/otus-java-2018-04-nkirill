@@ -16,11 +16,43 @@ public class JsonObjectWriter {
             return "null";
         }
         if (obj.getClass().isArray()) {
-            Object[] items = (Object[]) obj;
-            List list = Arrays.asList(items);
-            return convertToJson(list);
+            return convertToJson(convertArrayToList(obj));
         }
         return convertToJson(obj);
+    }
+
+    public LinkedHashMap toJsonSubObject(LinkedHashMap outsideMap, Object obj) {
+
+        Class<?> clazz = obj.getClass();
+        Field[] fields = clazz.getDeclaredFields();
+
+        LinkedHashMap map = new LinkedHashMap();
+
+        for (Field field : fields) {
+            try {
+                field.setAccessible(true);
+                if (isSimpleObject(field.get(obj))) {
+                    map.put(field.getName(), field.get(obj));
+                } else if (field.get(obj).getClass().isArray()) {
+                    Object[] items = (Object[]) field.get(obj);
+                    List list = Arrays.asList(items);
+                    map.put(field.getName(), list);
+                } else {
+                    map.put(field.getName(), toJsonSubObject(outsideMap, field.get(obj)));
+                }
+
+            } catch (IllegalAccessException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return map;
+    }
+
+    private List convertArrayToList(Object obj) {
+        Object[] items = (Object[]) obj;
+        List list = Arrays.asList(items);
+        return list;
     }
 
     private String convertToJson(Object obj) {
@@ -38,14 +70,7 @@ public class JsonObjectWriter {
 
         LinkedHashMap map = new LinkedHashMap();
 
-        for (Field field : fields) {
-            try {
-                field.setAccessible(true);
-                map.put(field.getName(), field.get(obj));
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-            }
-        }
+        map = toJsonSubObject(map, obj);
 
         return jsonObject.toJSONString(map);
 

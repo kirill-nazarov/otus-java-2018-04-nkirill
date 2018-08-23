@@ -2,6 +2,7 @@ package ru.otus.l8;
 
 import com.google.gson.Gson;
 import org.junit.Test;
+import ru.otus.l8.testObjects.A;
 import ru.otus.l8.testObjects.CustomObject;
 
 import java.util.Arrays;
@@ -56,7 +57,11 @@ public class JsonWriterTest {
 
     @Test
     public void writeCustomObject() {
-        CustomObject object = new CustomObject("New Name", 1995);
+        String[] array = {"String 1", "String 2", "String 3"};
+        A someClass = new A("abc", 123);
+        CustomObject object = new CustomObject("New Name", 1995, array, someClass);
+        System.out.println(gson.toJson(object));
+        System.out.println(jsonWriter.toJson(object));
         assertEquals(gson.toJson(object), jsonWriter.toJson(object));
     }
 
