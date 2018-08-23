@@ -34,9 +34,7 @@ public class JsonObjectWriter {
                 if (isSimpleObject(field.get(obj))) {
                     map.put(field.getName(), field.get(obj));
                 } else if (field.get(obj).getClass().isArray()) {
-                    Object[] items = (Object[]) field.get(obj);
-                    List list = Arrays.asList(items);
-                    map.put(field.getName(), list);
+                    map.put(field.getName(), convertArrayToList(field.get(obj)));
                 } else {
                     map.put(field.getName(), toJsonSubObject(outsideMap, field.get(obj)));
                 }
