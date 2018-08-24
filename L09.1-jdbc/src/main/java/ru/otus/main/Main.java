@@ -25,7 +25,7 @@ public class Main {
             UsersDataSet user2fromDb = dbService.load(user2Id, UsersDataSet.class);
             System.out.println("User1 data loaded from DB:" + user1fromDb.toString());
             System.out.println("User2 data loaded from DB:" + user2fromDb.toString());
-            //dbService.deleteTables();
+            dbService.deleteTables();
         }
     }
 }
