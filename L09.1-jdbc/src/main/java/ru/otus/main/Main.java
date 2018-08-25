@@ -4,7 +4,6 @@ import ru.otus.base.DBService;
 import ru.otus.base.UsersDataSet;
 import ru.otus.transaction.DBServicePreparedTransactional;
 
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws Exception {
