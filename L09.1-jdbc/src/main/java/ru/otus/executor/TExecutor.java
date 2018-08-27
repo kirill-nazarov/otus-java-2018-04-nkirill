@@ -2,10 +2,7 @@ package ru.otus.executor;
 
 import ru.otus.simple.TResultHandler;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class TExecutor extends LogExecutor {
     private final Connection connection;
@@ -16,7 +13,7 @@ public class TExecutor extends LogExecutor {
     }
 
     public <T> T execQuery(String query, TResultHandler<T> handler) throws SQLException {
-        try(Statement stmt = connection.createStatement()) {
+        try (Statement stmt = connection.createStatement()) {
             stmt.execute(query);
             ResultSet result = stmt.getResultSet();
             return handler.handle(result);
