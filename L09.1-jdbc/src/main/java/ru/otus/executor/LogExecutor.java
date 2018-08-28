@@ -27,6 +27,15 @@ public class LogExecutor {
         }
     }
 
+    public int execUpdateGetId(String update, ResultHandler handler) throws SQLException {
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(update, Statement.RETURN_GENERATED_KEYS);
+            ResultSet result = stmt.getGeneratedKeys();
+            handler.handle(result);
+            return stmt.getUpdateCount();
+        }
+    }
+
     Connection getConnection() {
         return connection;
     }

@@ -36,11 +36,18 @@ public class DBServiceUpdate extends DBServiceConnection {
         exec.execUpdate(DELETE_USER);
         System.out.println("Table dropped");
     }
-
+    
     @Override
     public <T extends UsersDataSet> void save(T user) throws SQLException {
         LogExecutor exec = new LogExecutor(getConnection());
-        exec.execUpdate(String.format(INSERT_USER, user.getName(), user.getAge()));
+        exec.execUpdateGetId(String.format(INSERT_USER, user.getName(), user.getAge()),
+                new ResultHandler() {
+                    @Override
+                    public void handle(ResultSet result) throws SQLException {
+                        result.next();
+                        user.setId(result.getLong(1));
+                    }
+                });
         System.out.println("User added to DB");
     }
 
