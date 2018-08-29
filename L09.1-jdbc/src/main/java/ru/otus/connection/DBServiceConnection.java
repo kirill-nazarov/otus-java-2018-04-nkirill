@@ -5,8 +5,6 @@ import ru.otus.base.UsersDataSet;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DBServiceConnection implements DBService {
 
@@ -33,34 +31,13 @@ public class DBServiceConnection implements DBService {
     public void prepareTables() throws SQLException {
     }
 
-    @Override
-    public void addUsers(String... names) throws SQLException {
-    }
-
-    @Override
-    public String getUserName(int id) throws SQLException {
-        return null;
-    }
-
-    @Override
-    public List<String> getAllNames() throws SQLException {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<UsersDataSet> getAllUsers() throws SQLException {
-        //todo: implement me please
-        return new ArrayList<>();
-    }
 
     @Override
     public <T extends UsersDataSet> void save(T user) throws SQLException {
-        //todo: implement me please
     }
 
     @Override
     public <T extends UsersDataSet> T load(long id, Class<T> clazz) throws SQLException {
-        //todo: implement me please
         return null;
     }
 

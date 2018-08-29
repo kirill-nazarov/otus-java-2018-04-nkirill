@@ -2,10 +2,8 @@ package ru.otus.connection;
 
 import ru.otus.base.UsersDataSet;
 import ru.otus.executor.Executor;
-import ru.otus.executor.ResultHandler;
 import ru.otus.reflection.ReflectionHelper;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DBServicePreparedTransactional extends DBServiceConnection {
@@ -22,15 +20,6 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
     }
 
     @Override
-    public void addUsers(String... names) throws SQLException {
-        Executor exec = new Executor(getConnection());
-        for (String name : names) {
-            int rows = exec.execUpdate(String.format(INSERT_USER, name));
-            System.out.println("User added. Rows changed: " + rows);
-        }
-    }
-
-    @Override
     public void deleteTables() throws SQLException {
         Executor exec = new Executor(getConnection());
         exec.execUpdate(DELETE_USER);
@@ -40,13 +29,10 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
     @Override
     public <T extends UsersDataSet> void save(T user) throws SQLException {
         Executor exec = new Executor(getConnection());
-        exec.execUpdateGetId(String.format(INSERT_USER, user.getName(), user.getAge()),
-                new ResultHandler() {
-                    @Override
-                    public void handle(ResultSet result) throws SQLException {
-                        result.next();
-                        user.setId(result.getLong(1));
-                    }
+        exec.execUpdate(String.format(INSERT_USER, user.getName(), user.getAge()),
+                result -> {
+                    result.next();
+                    user.setId(result.getLong(1));
                 });
         System.out.println("User added to DB");
     }
@@ -56,20 +42,18 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
         Executor exec = new Executor(getConnection());
         T user = ReflectionHelper.instantiate(clazz);
         exec.execQuery(String.format(SELECT_USER, id),
-                new ResultHandler() {
-                    @Override
-                    public void handle(ResultSet result) throws SQLException {
-                        result.next();
-                        user.setId(result.getInt("id"));
-                        user.setAge(result.getInt("age"));
-                        user.setName(result.getString("name"));
-                        System.out.println("Read user: " + result.getString("name"));
-                    }
+                result -> {
+                    result.next();
+                    user.setId(result.getInt("id"));
+                    user.setAge(result.getInt("age"));
+                    user.setName(result.getString("name"));
+                    System.out.println("Read user: " + result.getString("name"));
                 }
         );
 
         return user;
     }
+
 
     private <T extends UsersDataSet> String getInsertUserString(T user) {
         return null;
