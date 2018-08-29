@@ -13,7 +13,7 @@ public class Main {
     private void run() throws Exception {
         try (DBService dbService = new DBServicePreparedTransactional()) {
             System.out.println(dbService.getMetaData());
-            dbService.prepareTables();
+            dbService.prepareTables(UsersDataSet.class);
             UsersDataSet user1 = new UsersDataSet("John", 22);
             UsersDataSet user2 = new UsersDataSet("Ivan", 30);
             UsersDataSet user3 = new UsersDataSet("Anton", 35);
@@ -26,7 +26,7 @@ public class Main {
             System.out.println("User1 data loaded from DB:" + user1fromDb.toString());
             System.out.println("User2 data loaded from DB:" + user2fromDb.toString());
             System.out.println("User3 data loaded from DB:" + user3fromDb.toString());
-            dbService.deleteTables();
+            dbService.deleteTables(UsersDataSet.class);
         }
     }
 }

@@ -28,7 +28,7 @@ public class DBServiceConnection implements DBService {
     }
 
     @Override
-    public void prepareTables() throws SQLException {
+    public void prepareTables(Class clazz) throws SQLException {
     }
 
 
@@ -42,7 +42,7 @@ public class DBServiceConnection implements DBService {
     }
 
     @Override
-    public void deleteTables() throws SQLException {
+    public void deleteTables(Class clazz) throws SQLException {
     }
 
     @Override

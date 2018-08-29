@@ -1,5 +1,7 @@
 package ru.otus.base;
 
+import java.util.Objects;
+
 public class UsersDataSet extends DataSet {
 
     private String name;
@@ -36,6 +38,20 @@ public class UsersDataSet extends DataSet {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UsersDataSet)) return false;
+        UsersDataSet that = (UsersDataSet) o;
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getAge(), that.getAge());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getName(), getAge());
     }
 
     @Override
