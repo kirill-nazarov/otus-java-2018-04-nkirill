@@ -46,6 +46,7 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
                     for (Field field : clazz.getDeclaredFields()) {
                         ReflectionHelper.setFieldValue(user, field, result.getObject(field.getName()));
                     }
+                    user.setId(id);
                     System.out.println("Read user: " + result.getString("name"));
                 }
         );
