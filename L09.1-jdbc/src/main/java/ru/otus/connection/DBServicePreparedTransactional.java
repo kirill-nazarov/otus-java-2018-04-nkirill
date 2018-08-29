@@ -43,10 +43,15 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
         exec.execQuery(String.format(SELECT_USER, clazz.getSimpleName(), id),
                 result -> {
                     result.next();
+                    if (clazz.getSuperclass() != null) {
+                        Class clzz = clazz.getSuperclass();
+                        for (Field field : clzz.getDeclaredFields()) {
+                            ReflectionHelper.setFieldValue(user, field, result.getObject(field.getName()));
+                        }
+                    }
                     for (Field field : clazz.getDeclaredFields()) {
                         ReflectionHelper.setFieldValue(user, field, result.getObject(field.getName()));
                     }
-                    user.setId(id);
                     System.out.println("Read user: " + result.getString("name"));
                 }
         );
