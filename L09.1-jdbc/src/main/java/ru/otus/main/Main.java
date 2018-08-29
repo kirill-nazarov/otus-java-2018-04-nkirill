@@ -2,7 +2,7 @@ package ru.otus.main;
 
 import ru.otus.base.DBService;
 import ru.otus.base.UsersDataSet;
-import ru.otus.transaction.DBServicePreparedTransactional;
+import ru.otus.connection.DBServicePreparedTransactional;
 
 
 public class Main {

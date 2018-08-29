@@ -1,14 +1,12 @@
 package ru.otus.executor;
 
-import ru.otus.logger.ResultHandler;
-
 import java.sql.*;
 
 
-public class LogExecutor {
+public class Executor {
     private final Connection connection;
 
-    public LogExecutor(Connection connection) {
+    public Executor(Connection connection) {
         this.connection = connection;
     }
 

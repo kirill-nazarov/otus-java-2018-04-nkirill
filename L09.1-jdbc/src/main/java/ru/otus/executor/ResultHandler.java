@@ -1,4 +1,4 @@
-package ru.otus.logger;
+package ru.otus.executor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
