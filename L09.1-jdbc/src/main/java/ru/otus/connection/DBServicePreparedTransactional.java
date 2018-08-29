@@ -54,9 +54,4 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
         return user;
     }
 
-
-    private <T extends UsersDataSet> String getInsertUserString(T user) {
-        return null;
-    }
-
 }
