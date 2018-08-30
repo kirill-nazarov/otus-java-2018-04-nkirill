@@ -14,9 +14,9 @@ public class Executor {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setLong(1, id);
             ps.executeQuery();
-            ResultSet result = ps.getResultSet();
-            handler.handle(result);
-            result.close();
+            try (ResultSet result = ps.getResultSet()) {
+                handler.handle(result);
+            }
         }
     }
 
@@ -30,9 +30,9 @@ public class Executor {
     public int execUpdate(String update, ResultHandler handler) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
             ps.executeUpdate();
-            ResultSet result = ps.getGeneratedKeys();
-            handler.handle(result);
-            result.close();
+            try (ResultSet result = ps.getGeneratedKeys()) {
+                handler.handle(result);
+            }
             return ps.getUpdateCount();
         }
     }
