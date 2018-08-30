@@ -1,15 +1,36 @@
 package ru.otus.connection;
 
+import ru.otus.base.DBService;
 import ru.otus.base.UsersDataSet;
 import ru.otus.executor.Executor;
 import ru.otus.reflection.ReflectionHelper;
 
 import java.lang.reflect.Field;
+import java.sql.Connection;
 import java.sql.SQLException;
 
-public class DBServicePreparedTransactional extends DBServiceConnection {
+public class DBServicePreparedTransactional implements DBService {
     private static final String DELETE_USER = "drop table %s";
-    private static final String SELECT_USER = "select * from %s where id=%s";
+    private static final String SELECT_USER = "select * from %s where id=?";
+    private final Connection connection;
+
+
+    public DBServicePreparedTransactional() {
+        connection = ConnectionHelper.getConnection();
+    }
+
+    @Override
+    public String getMetaData() {
+        try {
+            return "Connected to: " + getConnection().getMetaData().getURL() + "\n" +
+                    "DB name: " + getConnection().getMetaData().getDatabaseProductName() + "\n" +
+                    "DB version: " + getConnection().getMetaData().getDatabaseProductVersion() + "\n" +
+                    "Driver: " + getConnection().getMetaData().getDriverName();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
 
     @Override
     public void prepareTables(Class clazz) throws SQLException {
@@ -40,7 +61,7 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
     public <T extends UsersDataSet> T load(long id, Class<T> clazz) throws SQLException {
         Executor exec = new Executor(getConnection());
         T user = ReflectionHelper.instantiate(clazz);
-        exec.execQuery(String.format(SELECT_USER, clazz.getSimpleName(), id),
+        exec.execQuery(String.format(SELECT_USER, clazz.getSimpleName()), id,
                 result -> {
                     result.next();
                     if (clazz.getSuperclass() != null) {
@@ -99,6 +120,16 @@ public class DBServicePreparedTransactional extends DBServiceConnection {
         insert.deleteCharAt(insert.lastIndexOf(","));
         insert.append(")");
         return insert.toString();
+    }
+
+    @Override
+    public void close() throws Exception {
+        connection.close();
+        System.out.println("Connection closed. Bye!");
+    }
+
+    protected Connection getConnection() {
+        return connection;
     }
 
 }

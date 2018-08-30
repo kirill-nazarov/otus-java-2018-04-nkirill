@@ -10,27 +10,30 @@ public class Executor {
         this.connection = connection;
     }
 
-    public void execQuery(String query, ResultHandler handler) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(query);
-            ResultSet result = stmt.getResultSet();
+    public void execQuery(String query, long id, ResultHandler handler) throws SQLException {
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ps.executeQuery();
+            ResultSet result = ps.getResultSet();
             handler.handle(result);
+            result.close();
         }
     }
 
     public int execUpdate(String update) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.execute(update);
-            return stmt.getUpdateCount();
+        try (PreparedStatement ps = connection.prepareStatement(update)) {
+            ps.executeUpdate();
+            return ps.getUpdateCount();
         }
     }
 
     public int execUpdate(String update, ResultHandler handler) throws SQLException {
-        try (Statement stmt = connection.createStatement()) {
-            stmt.executeUpdate(update, Statement.RETURN_GENERATED_KEYS);
-            ResultSet result = stmt.getGeneratedKeys();
+        try (PreparedStatement ps = connection.prepareStatement(update, Statement.RETURN_GENERATED_KEYS)) {
+            ps.executeUpdate();
+            ResultSet result = ps.getGeneratedKeys();
             handler.handle(result);
-            return stmt.getUpdateCount();
+            result.close();
+            return ps.getUpdateCount();
         }
     }
 }
