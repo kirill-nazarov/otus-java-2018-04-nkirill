@@ -7,7 +7,6 @@ import ru.otus.datasets.UserDataSet;
 import ru.otus.dbservice.DBService;
 import ru.otus.dbservice.DBServiceHibernateImpl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class DBTest {
 
 
     @Test
-    public void testSave() throws SQLException {
+    public void testSave() {
         AddressDataSet address1 = new AddressDataSet("Ulica Vokzalnaya");
         List<PhoneDataSet> antonPhonesList = new ArrayList<>();
         PhoneDataSet phoneNum1 = new PhoneDataSet("7 705 555 34 87");
