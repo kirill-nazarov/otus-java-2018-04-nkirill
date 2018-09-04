@@ -70,16 +70,10 @@ public class UserDataSet extends DataSet {
         if (!(o instanceof UserDataSet)) return false;
         UserDataSet that = (UserDataSet) o;
         List<PhoneDataSet> phonesThat = that.getPhones();
-        boolean checkTrue = false;
-        boolean checkFalse = false;
+        boolean checkPhones = true;
         for (int i = 0; i < phones.size(); i++) {
-            if (phones.get(i).equals(phonesThat.get(i))) {
-                checkTrue = true;
-            } else {
-                checkFalse = true;
-            }
+            if (!phones.get(i).equals(phonesThat.get(i))) checkPhones = false;
         }
-        boolean checkPhones = checkTrue & !checkFalse;
         return Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getAge(), that.getAge()) &&
                 Objects.equals(getAddress(), that.getAddress()) && checkPhones;
