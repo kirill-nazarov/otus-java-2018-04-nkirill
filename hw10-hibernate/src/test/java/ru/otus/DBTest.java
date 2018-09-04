@@ -12,6 +12,8 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 
 public class DBTest {
 
@@ -57,6 +59,9 @@ public class DBTest {
         for (int i = 0; i < phones.size(); i++) {
             assertTrue(phones.get(i).equals(phonesFromDB.get(i)));
         }
+        user1fromDb.getPhones().get(0).setNumber("123");
+        assertFalse(phones.get(0).equals(phonesFromDB.get(0)));
+        assertFalse(user1.equals(user1fromDb));
 
 
     }
