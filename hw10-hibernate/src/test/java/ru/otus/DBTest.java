@@ -49,6 +49,7 @@ public class DBTest {
         dbService.save(user2);
 
         UserDataSet user1fromDb = dbService.readByName(user1.getName());
+        UserDataSet user2fromDb = dbService.readByName(user2.getName());
         assertEquals(user1, user1fromDb);
         assertTrue(user1.getName().equals(user1fromDb.getName()));
         assertTrue(user1.getAge().equals(user1fromDb.getAge()));
@@ -60,8 +61,10 @@ public class DBTest {
             assertTrue(phones.get(i).equals(phonesFromDB.get(i)));
         }
         user1fromDb.getPhones().get(0).setNumber("123");
+        user2fromDb.getPhones().add(new PhoneDataSet("423"));
         assertFalse(phones.get(0).equals(phonesFromDB.get(0)));
         assertFalse(user1.equals(user1fromDb));
+        assertFalse(user2.equals(user2fromDb));
 
 
     }
