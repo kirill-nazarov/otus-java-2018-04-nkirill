@@ -57,8 +57,10 @@ public class DBServiceHibernateImpl implements DBService {
 
     public void save(UserDataSet dataSet) {
         try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
             UserDataSetDAO dao = new UserDataSetDAO(session);
             dao.save(dataSet);
+            transaction.commit();
         }
     }
 
