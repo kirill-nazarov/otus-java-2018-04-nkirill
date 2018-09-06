@@ -8,7 +8,7 @@ public class ConnectionHelperTestDB {
 
     public static Connection getConnection() {
         try {
-            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            DriverManager.registerDriver(new org.h2.Driver());
 
             String url = "jdbc:h2:mem:test";
 
