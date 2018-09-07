@@ -64,11 +64,11 @@ public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     }
 
     public V get(K key) {
-        if (elements.get(key) != null) {
+        MyElement<K, V> element = elements.get(key);
+        if (element != null && element.getValue() != null) {
             hit++;
-            MyElement<K, V> element = elements.get(key);
             element.setAccessed();
-            return elements.get(key).getValue();
+            return element.getValue();
         } else {
             miss++;
             return null;
