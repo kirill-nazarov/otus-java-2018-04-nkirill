@@ -4,6 +4,7 @@ import ru.otus.datasets.AddressDataSet;
 import ru.otus.datasets.PhoneDataSet;
 import ru.otus.datasets.UserDataSet;
 import ru.otus.dbservice.DBService;
+import ru.otus.dbservice.DBServiceCachedImpl;
 import ru.otus.dbservice.DBServiceHibernateImpl;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        DBService dbService = new DBServiceHibernateImpl();
+        DBService dbService = new DBServiceCachedImpl();
 
         String status = dbService.getLocalStatus();
         System.out.println("Status: " + status);

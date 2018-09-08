@@ -11,7 +11,7 @@ class DataSet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    long getId() {
+    public long getId() {
         return id;
     }
 
