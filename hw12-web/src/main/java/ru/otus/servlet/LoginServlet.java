@@ -66,7 +66,7 @@ public class LoginServlet extends HttpServlet {
 
         if (requestLogin != null && requestPassword != null) {
             if (requestLogin.equals(ADMIN_LOGIN) && requestPassword.equals(ADMIN_PASSWORD)) {
-                this.authorizeAdmin(request);
+                authorizeAdmin(request);
             } else {
                 deAuthorizeAdmin(request);
             }
