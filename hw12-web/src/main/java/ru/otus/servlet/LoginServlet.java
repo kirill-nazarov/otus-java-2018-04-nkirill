@@ -49,7 +49,9 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(true);
-        session.setAttribute("Authorized", false);
+        if (session.getAttribute("Authorized") == null) {
+            session.setAttribute("Authorized", false);
+        }
 
         String requestLogin = request.getParameter(LOGIN_PARAMETER_NAME);
         String requestPassword = request.getParameter(PASSWORD_PARAMETER_NAME);
@@ -65,6 +67,8 @@ public class LoginServlet extends HttpServlet {
         if (requestLogin != null && requestPassword != null) {
             if (requestLogin.equals(ADMIN_LOGIN) && requestPassword.equals(ADMIN_PASSWORD)) {
                 this.authorizeAdmin(request);
+            } else {
+                deAuthorizeAdmin(request);
             }
         }
 
@@ -80,6 +84,11 @@ public class LoginServlet extends HttpServlet {
     private void authorizeAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
         session.setAttribute("Authorized", true);
+    }
+
+    private void deAuthorizeAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession(true);
+        session.setAttribute("Authorized", false);
     }
 
     private void setOK(HttpServletResponse response) {
