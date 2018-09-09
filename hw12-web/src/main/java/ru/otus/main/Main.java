@@ -1,19 +1,37 @@
 package ru.otus.main;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import ru.otus.cache.CacheEngine;
+import ru.otus.cache.CacheEngineImpl;
 import ru.otus.datasets.AddressDataSet;
 import ru.otus.datasets.PhoneDataSet;
 import ru.otus.datasets.UserDataSet;
 import ru.otus.dbservice.DBService;
 import ru.otus.dbservice.DBServiceCachedImpl;
 import ru.otus.dbservice.DBServiceHibernateImpl;
+import ru.otus.servlet.AdminServlet;
+import ru.otus.servlet.LoginServlet;
+import ru.otus.servlet.TemplateProcessor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) {
-        DBService dbService = new DBServiceCachedImpl();
+
+    private final static int PORT = 8090;
+    private final static String PUBLIC_HTML = "public_html";
+
+    public static void main(String[] args) throws Exception {
+
+        //DBService
+        CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>(5);
+        DBService dbService = new DBServiceCachedImpl(cache);
 
         String status = dbService.getLocalStatus();
         System.out.println("Status: " + status);
@@ -46,16 +64,24 @@ public class Main {
 
         dbService.save(user2);
 
-        UserDataSet dataSet = dbService.read(1);
+        UserDataSet dataSet = dbService.read(user1.getId());
         System.out.println(dataSet);
 
-        dataSet = dbService.readByName("Ivan");
-        System.out.println(dataSet);
 
-        List<UserDataSet> dataSets = dbService.readAll();
-        for (UserDataSet userDataSet : dataSets) {
-            System.out.println(userDataSet);
-        }
+        //Web Server
+        ResourceHandler resourceHandler = new ResourceHandler();
+        resourceHandler.setResourceBase(PUBLIC_HTML);
+
+        ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
+
+        context.addServlet(new ServletHolder(new AdminServlet(cache)), "/admin");
+        context.addServlet(LoginServlet.class, "/login");
+
+        Server server = new Server(PORT);
+        server.setHandler(new HandlerList(resourceHandler, context));
+
+        server.start();
+        server.join();
 
         dbService.shutdown();
     }

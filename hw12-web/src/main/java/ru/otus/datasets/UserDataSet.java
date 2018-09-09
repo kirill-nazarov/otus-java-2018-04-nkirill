@@ -25,6 +25,14 @@ public class UserDataSet extends DataSet {
     public UserDataSet() {
     }
 
+    public UserDataSet(UserDataSet userDataSet) {
+        this.name = userDataSet.getName();
+        this.age = userDataSet.getAge();
+        this.address = userDataSet.getAddress();
+        this.phones = userDataSet.getPhones();
+    }
+
+
     public UserDataSet(String name, Integer age, AddressDataSet address, List<PhoneDataSet> phones) {
         this.name = name;
         this.age = age;

@@ -1,6 +1,8 @@
 package ru.otus;
 
 import org.junit.Test;
+import ru.otus.cache.CacheEngine;
+import ru.otus.cache.CacheEngineImpl;
 import ru.otus.datasets.AddressDataSet;
 import ru.otus.datasets.PhoneDataSet;
 import ru.otus.datasets.UserDataSet;
@@ -18,11 +20,13 @@ import static org.junit.Assert.assertThat;
 
 public class DBTest {
 
-    DBService dbService = new DBServiceCachedImpl(TestDBHelper.getConfiguration(), 5);
+
+    CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>(5);
+    DBService dbService = new DBServiceCachedImpl(TestDBHelper.getConfiguration(), cache);
 
 
     @Test
-    public void testSave() {
+    public void testSave() throws Exception {
         AddressDataSet address1 = new AddressDataSet("Ulica Vokzalnaya");
         List<PhoneDataSet> antonPhonesList = new ArrayList<>();
         PhoneDataSet phoneNum1 = new PhoneDataSet("7 705 555 34 87");
@@ -49,19 +53,40 @@ public class DBTest {
 
         dbService.save(user2);
 
-        UserDataSet user1fromDb = dbService.read(user1.getId());
-        UserDataSet user2fromDb = dbService.read(user2.getId());
-        assertEquals(user1, user1fromDb);
-        assertEquals(user2, user2fromDb);
-        assertTrue(user1.getName().equals(user1fromDb.getName()));
-        assertTrue(user1.getAge().equals(user1fromDb.getAge()));
-        assertTrue(user1.getAddress().equals(user1fromDb.getAddress()));
-        List<PhoneDataSet> phones = user1.getPhones();
-        List<PhoneDataSet> phonesFromDB = user1fromDb.getPhones();
-        assertTrue(phones.size() == phonesFromDB.size());
-        for (int i = 0; i < phones.size(); i++) {
-            assertTrue(phones.get(i).equals(phonesFromDB.get(i)));
-        }
+        //Create more users
+
+        UserDataSet user3 = new UserDataSet(user1);
+        UserDataSet user4 = new UserDataSet(user1);
+        UserDataSet user5 = new UserDataSet(user1);
+        UserDataSet user6 = new UserDataSet(user1);
+        UserDataSet user7 = new UserDataSet(user1);
+        UserDataSet user8 = new UserDataSet(user1);
+        UserDataSet user9 = new UserDataSet(user1);
+        UserDataSet user10 = new UserDataSet(user1);
+
+        dbService.save(user3);
+        dbService.save(user4);
+        dbService.save(user5);
+        dbService.save(user6);
+        dbService.save(user7);
+        dbService.save(user8);
+        dbService.save(user9);
+        dbService.save(user10);
+
+        //Read users data from db
+        dbService.read(user1.getId());
+        dbService.read(user2.getId());
+        dbService.read(user3.getId());
+        dbService.read(user4.getId());
+        dbService.read(user5.getId());
+        dbService.read(user6.getId());
+        dbService.read(user7.getId());
+        dbService.read(user8.getId());
+        dbService.read(user9.getId());
+        dbService.read(user10.getId());
+
+        WebServerHelper webServerHelper = new WebServerHelper(cache);
+
     }
 
 }

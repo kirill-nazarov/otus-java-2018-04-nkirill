@@ -16,9 +16,15 @@ public class DBServiceCachedImpl extends DBServiceHibernateImpl {
         super();
     }
 
-    public DBServiceCachedImpl(Configuration configuration, int numOfCachedElements) {
+    public DBServiceCachedImpl(CacheEngine<Long, UserDataSet> cache) {
+        super();
+        this.cache = cache;
+    }
+
+
+    public DBServiceCachedImpl(Configuration configuration, CacheEngine<Long, UserDataSet> cache) {
         super(configuration);
-        cache = new CacheEngineImpl<>(numOfCachedElements);
+        this.cache = cache;
     }
 
     @Override
