@@ -1,9 +1,11 @@
 package ru.otus.dbservice;
 
+import org.springframework.stereotype.Service;
 import ru.otus.datasets.UserDataSet;
 
 import java.util.List;
 
+@Service
 public interface DBService {
     String getLocalStatus();
 

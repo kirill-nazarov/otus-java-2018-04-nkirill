@@ -1,5 +1,10 @@
 package ru.otus.servlet;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,16 +22,13 @@ public class LoginServlet extends HttpServlet {
     private static final String AUTHORIZED = "Authorized";
     private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
-    private final TemplateProcessor templateProcessor;
+    @Autowired
+    private TemplateProcessor templateProcessor;
 
-    @SuppressWarnings("WeakerAccess")
-    public LoginServlet() throws IOException {
-        this(new TemplateProcessor());
-    }
-
-    @SuppressWarnings("WeakerAccess")
-    public LoginServlet(TemplateProcessor templateProcessor) {
-        this.templateProcessor = templateProcessor;
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
 

@@ -2,10 +2,12 @@ package ru.otus.dbservice;
 
 import org.apache.log4j.Logger;
 import org.hibernate.cfg.Configuration;
+import org.springframework.stereotype.Service;
 import ru.otus.cache.CacheEngine;
 import ru.otus.cache.CacheEngineImpl;
 import ru.otus.datasets.UserDataSet;
 
+@Service
 public class DBServiceCachedImpl extends DBServiceHibernateImpl {
 
     CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>();

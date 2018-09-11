@@ -1,11 +1,14 @@
 package ru.otus.cache;
 
+import org.springframework.stereotype.Service;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.function.Function;
 
+@Service
 public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
     private static final int TIME_THRESHOLD_MS = 5;
 

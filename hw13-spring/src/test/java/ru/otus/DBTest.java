@@ -15,7 +15,7 @@ import java.util.List;
 public class DBTest {
 
 
-    CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>(5);
+    private CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>(5);
     DBService dbService = new DBServiceCachedImpl(TestDBHelper.getConfiguration(), cache);
 
 

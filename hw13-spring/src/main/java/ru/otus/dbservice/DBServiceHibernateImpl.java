@@ -6,6 +6,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.springframework.stereotype.Service;
 import ru.otus.datasets.AddressDataSet;
 import ru.otus.datasets.PhoneDataSet;
 import ru.otus.datasets.UserDataSet;
@@ -13,7 +14,6 @@ import ru.otus.dbservice.dao.UserDataSetDAO;
 
 import java.util.List;
 import java.util.function.Function;
-
 
 public class DBServiceHibernateImpl implements DBService {
     private final SessionFactory sessionFactory;
