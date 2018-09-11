@@ -4,7 +4,6 @@ import ru.otus.cache.CacheEngine;
 import ru.otus.cache.CacheEngineImpl;
 import ru.otus.datasets.UserDataSet;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

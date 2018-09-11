@@ -19,6 +19,8 @@ public class LoginServlet extends HttpServlet {
     private static final String ADMIN_LOGIN = "admin";
     private static final String ADMIN_PASSWORD = "pazzword";
 
+    private static final String AUTHORIZED_ATTRIBUTE = "Authorized";
+
     private final TemplateProcessor templateProcessor;
 
 
@@ -49,8 +51,8 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("Authorized") == null) {
-            session.setAttribute("Authorized", false);
+        if (session.getAttribute(AUTHORIZED_ATTRIBUTE) == null) {
+            session.setAttribute(AUTHORIZED_ATTRIBUTE, false);
         }
 
         String requestLogin = request.getParameter(LOGIN_PARAMETER_NAME);
@@ -73,22 +75,20 @@ public class LoginServlet extends HttpServlet {
         }
 
         setOK(response);
-        String log = (String) request.getSession().getAttribute("login");
-        String pass = (String) request.getSession().getAttribute("password");
-        boolean adminAuthorized = (boolean) session.getAttribute("Authorized");
-        String page = getPage(log, pass, adminAuthorized); //save to the page
+        boolean adminAuthorized = (boolean) session.getAttribute(AUTHORIZED_ATTRIBUTE);
+        String page = getPage(requestLogin, requestPassword, adminAuthorized); //save to the page
         response.getWriter().println(page);
     }
 
 
     private void authorizeAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        session.setAttribute("Authorized", true);
+        session.setAttribute(AUTHORIZED_ATTRIBUTE, true);
     }
 
     private void deAuthorizeAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        session.setAttribute("Authorized", false);
+        session.setAttribute(AUTHORIZED_ATTRIBUTE, false);
     }
 
     private void setOK(HttpServletResponse response) {

@@ -20,6 +20,8 @@ public class AdminServlet extends HttpServlet {
     private static final String LOGIN_VARIABLE_NAME = "login";
     private static final String PASSWORD_VARIABLE_NAME = "password";
 
+    private static final String AUTHORIZED_ATTRIBUTE = "Authorized";
+
     private final TemplateProcessor templateProcessor;
     private CacheEngine<Long, UserDataSet> cache;
 
@@ -51,9 +53,9 @@ public class AdminServlet extends HttpServlet {
                        HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("Authorized") != null) {
+        if (session.getAttribute(AUTHORIZED_ATTRIBUTE) != null) {
             boolean authorized;
-            authorized = (boolean) session.getAttribute("Authorized");
+            authorized = (boolean) session.getAttribute(AUTHORIZED_ATTRIBUTE);
             if (authorized) {
                 response.setContentType("text/html;charset=utf-8");
                 String page = templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, cache.getCacheInfo());
