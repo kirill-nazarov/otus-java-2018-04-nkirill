@@ -30,12 +30,9 @@ public class LoginServlet extends HttpServlet {
         this(new TemplateProcessor());
     }
 
-    private String getPage(String login, String pass, boolean adminAuthorized) throws IOException {
+    private String getPage(boolean adminAuthorized) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put(LOGIN, login == null ? "" : login);
-        pageVariables.put(PASSWORD, pass == null ? "" : pass);
         pageVariables.put(ADMIN_AUTHORIZED, adminAuthorized);
-
         return templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, pageVariables);
     }
 
@@ -54,14 +51,6 @@ public class LoginServlet extends HttpServlet {
         String requestLogin = request.getParameter(LOGIN);
         String requestPassword = request.getParameter(PASSWORD);
 
-        if (requestLogin != null) {
-            request.getSession().setAttribute(LOGIN, requestLogin);
-        }
-
-        if (requestPassword != null) {
-            request.getSession().setAttribute(PASSWORD, requestPassword);
-        }
-
         if (requestLogin != null && requestPassword != null) {
             if (requestLogin.equals(ADMIN_LOGIN) && requestPassword.equals(ADMIN_PASSWORD)) {
                 authorizeAdmin(request);
@@ -72,7 +61,7 @@ public class LoginServlet extends HttpServlet {
 
         setOK(response);
         boolean adminAuthorized = (boolean) session.getAttribute(AUTHORIZED);
-        String page = getPage(requestLogin, requestPassword, adminAuthorized); //save to the page
+        String page = getPage(adminAuthorized); //save to the page
         response.getWriter().println(page);
     }
 

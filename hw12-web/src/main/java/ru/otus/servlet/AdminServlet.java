@@ -15,9 +15,8 @@ public class AdminServlet extends HttpServlet {
 
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final String ADMIN_PAGE_TEMPLATE_UNAUTHORIZED = "unauthorized.html";
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
     private static final String AUTHORIZED = "Authorized";
+    private static final String ADMIN_AUTHORIZED = "adminAuthorized";
     private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
     private final TemplateProcessor templateProcessor;
@@ -35,10 +34,9 @@ public class AdminServlet extends HttpServlet {
     }
 
 
-    private String getPage(String login, String pass) throws IOException {
+    private String getPage(boolean adminAuthorized) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put(LOGIN, login == null ? "" : login);
-        pageVariables.put(PASSWORD, pass == null ? "" : pass);
+        pageVariables.put(ADMIN_AUTHORIZED, adminAuthorized);
         return templateProcessor.getPage(ADMIN_PAGE_TEMPLATE_UNAUTHORIZED, pageVariables);
     }
 
@@ -52,24 +50,22 @@ public class AdminServlet extends HttpServlet {
 
         HttpSession session = request.getSession(true);
         if (session.getAttribute(AUTHORIZED) != null) {
-            boolean authorized;
-            authorized = (boolean) session.getAttribute(AUTHORIZED);
+            boolean authorized = (boolean) session.getAttribute(AUTHORIZED);
             if (authorized) {
                 response.setContentType(CONTENT_TYPE);
                 String page = templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, cache.getCacheInfo());
-                response.getWriter().println(page);
                 response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(page);
                 return;
             }
         }
-
         response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
-        String log = (String) request.getSession().getAttribute(LOGIN);
-        String pass = (String) request.getSession().getAttribute(PASSWORD);
-        String page = getPage(log, pass); //save to the page
+        if (session.getAttribute(AUTHORIZED) == null) {
+            session.setAttribute(AUTHORIZED, false);
+        }
+        boolean adminAuthorized = (boolean) session.getAttribute(AUTHORIZED);
+        String page = getPage(adminAuthorized); //save to the page
         response.getWriter().println(page);
-
-
     }
 }
