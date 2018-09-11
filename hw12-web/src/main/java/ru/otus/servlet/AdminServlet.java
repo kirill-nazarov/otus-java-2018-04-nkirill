@@ -3,7 +3,6 @@ package ru.otus.servlet;
 import ru.otus.cache.CacheEngine;
 import ru.otus.datasets.UserDataSet;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,11 +15,10 @@ public class AdminServlet extends HttpServlet {
 
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final String ADMIN_PAGE_TEMPLATE_UNAUTHORIZED = "unauthorized.html";
-
-    private static final String LOGIN_VARIABLE_NAME = "login";
-    private static final String PASSWORD_VARIABLE_NAME = "password";
-
-    private static final String AUTHORIZED_ATTRIBUTE = "Authorized";
+    private static final String LOGIN = "login";
+    private static final String PASSWORD = "password";
+    private static final String AUTHORIZED = "Authorized";
+    private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
     private final TemplateProcessor templateProcessor;
     private CacheEngine<Long, UserDataSet> cache;
@@ -39,8 +37,8 @@ public class AdminServlet extends HttpServlet {
 
     private String getPage(String login, String pass) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put(LOGIN_VARIABLE_NAME, login == null ? "" : login);
-        pageVariables.put(PASSWORD_VARIABLE_NAME, pass == null ? "" : pass);
+        pageVariables.put(LOGIN, login == null ? "" : login);
+        pageVariables.put(PASSWORD, pass == null ? "" : pass);
         return templateProcessor.getPage(ADMIN_PAGE_TEMPLATE_UNAUTHORIZED, pageVariables);
     }
 
@@ -53,11 +51,11 @@ public class AdminServlet extends HttpServlet {
                        HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(true);
-        if (session.getAttribute(AUTHORIZED_ATTRIBUTE) != null) {
+        if (session.getAttribute(AUTHORIZED) != null) {
             boolean authorized;
-            authorized = (boolean) session.getAttribute(AUTHORIZED_ATTRIBUTE);
+            authorized = (boolean) session.getAttribute(AUTHORIZED);
             if (authorized) {
-                response.setContentType("text/html;charset=utf-8");
+                response.setContentType(CONTENT_TYPE);
                 String page = templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, cache.getCacheInfo());
                 response.getWriter().println(page);
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -65,10 +63,10 @@ public class AdminServlet extends HttpServlet {
             }
         }
 
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
-        String log = (String) request.getSession().getAttribute("login");
-        String pass = (String) request.getSession().getAttribute("password");
+        String log = (String) request.getSession().getAttribute(LOGIN);
+        String pass = (String) request.getSession().getAttribute(PASSWORD);
         String page = getPage(log, pass); //save to the page
         response.getWriter().println(page);
 
