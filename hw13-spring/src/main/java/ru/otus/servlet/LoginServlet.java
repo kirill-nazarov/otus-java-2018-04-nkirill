@@ -1,9 +1,6 @@
 package ru.otus.servlet;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,15 +8,14 @@ import java.util.Map;
 
 public class LoginServlet extends HttpServlet {
 
-    public static final String LOGIN_PARAMETER_NAME = "login";
-    public static final String PASSWORD_PARAMETER_NAME = "password";
-    private static final String LOGIN_VARIABLE_NAME = "login";
-    private static final String PASSWORD_VARIABLE_NAME = "password";
-    private static final String ADMIN_AUTHORIZED_VARIABLE_NAME = "adminAuthorized";
+    public static final String LOGIN = "login";
+    public static final String PASSWORD = "password";
+    private static final String ADMIN_AUTHORIZED = "adminAuthorized";
     private static final String LOGIN_PAGE_TEMPLATE = "login.html";
-
     private static final String ADMIN_LOGIN = "admin";
     private static final String ADMIN_PASSWORD = "pazzword";
+    private static final String AUTHORIZED = "Authorized";
+    private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
     private final TemplateProcessor templateProcessor;
 
@@ -34,12 +30,9 @@ public class LoginServlet extends HttpServlet {
     }
 
 
-    private String getPage(String login, String pass, boolean adminAuthorized) throws IOException {
+    private String getPage(boolean adminAuthorized) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put(LOGIN_VARIABLE_NAME, login == null ? "" : login);
-        pageVariables.put(PASSWORD_VARIABLE_NAME, pass == null ? "" : pass);
-        pageVariables.put(ADMIN_AUTHORIZED_VARIABLE_NAME, adminAuthorized);
-
+        pageVariables.put(ADMIN_AUTHORIZED, adminAuthorized);
         return templateProcessor.getPage(LOGIN_PAGE_TEMPLATE, pageVariables);
     }
 
@@ -51,20 +44,12 @@ public class LoginServlet extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("Authorized") == null) {
-            session.setAttribute("Authorized", false);
+        if (session.getAttribute(AUTHORIZED) == null) {
+            session.setAttribute(AUTHORIZED, false);
         }
 
-        String requestLogin = request.getParameter(LOGIN_PARAMETER_NAME);
-        String requestPassword = request.getParameter(PASSWORD_PARAMETER_NAME);
-
-        if (requestLogin != null) {
-            request.getSession().setAttribute("login", requestLogin);
-        }
-
-        if (requestPassword != null) {
-            request.getSession().setAttribute("password", requestPassword);
-        }
+        String requestLogin = request.getParameter(LOGIN);
+        String requestPassword = request.getParameter(PASSWORD);
 
         if (requestLogin != null && requestPassword != null) {
             if (requestLogin.equals(ADMIN_LOGIN) && requestPassword.equals(ADMIN_PASSWORD)) {
@@ -75,26 +60,24 @@ public class LoginServlet extends HttpServlet {
         }
 
         setOK(response);
-        String log = (String) request.getSession().getAttribute("login");
-        String pass = (String) request.getSession().getAttribute("password");
-        boolean adminAuthorized = (boolean) session.getAttribute("Authorized");
-        String page = getPage(log, pass, adminAuthorized); //save to the page
+        boolean adminAuthorized = (boolean) session.getAttribute(AUTHORIZED);
+        String page = getPage(adminAuthorized); //save to the page
         response.getWriter().println(page);
     }
 
 
     private void authorizeAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        session.setAttribute("Authorized", true);
+        session.setAttribute(AUTHORIZED, true);
     }
 
     private void deAuthorizeAdmin(HttpServletRequest request) {
         HttpSession session = request.getSession(true);
-        session.setAttribute("Authorized", false);
+        session.setAttribute(AUTHORIZED, false);
     }
 
     private void setOK(HttpServletResponse response) {
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
     }
 

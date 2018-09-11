@@ -16,9 +16,9 @@ public class AdminServlet extends HttpServlet {
 
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final String ADMIN_PAGE_TEMPLATE_UNAUTHORIZED = "unauthorized.html";
-
-    private static final String LOGIN_VARIABLE_NAME = "login";
-    private static final String PASSWORD_VARIABLE_NAME = "password";
+    private static final String AUTHORIZED = "Authorized";
+    private static final String ADMIN_AUTHORIZED = "adminAuthorized";
+    private static final String CONTENT_TYPE = "text/html;charset=utf-8";
 
     private final TemplateProcessor templateProcessor;
     private CacheEngine<Long, UserDataSet> cache = new CacheEngineImpl<>(5);
@@ -40,10 +40,9 @@ public class AdminServlet extends HttpServlet {
     }
 
 
-    private String getPage(String login, String pass) throws IOException {
+    private String getPage(boolean adminAuthorized) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put(LOGIN_VARIABLE_NAME, login == null ? "" : login);
-        pageVariables.put(PASSWORD_VARIABLE_NAME, pass == null ? "" : pass);
+        pageVariables.put(ADMIN_AUTHORIZED, adminAuthorized);
         return templateProcessor.getPage(ADMIN_PAGE_TEMPLATE_UNAUTHORIZED, pageVariables);
     }
 
@@ -56,25 +55,23 @@ public class AdminServlet extends HttpServlet {
                        HttpServletResponse response) throws IOException {
 
         HttpSession session = request.getSession(true);
-        if (session.getAttribute("Authorized") != null) {
-            boolean authorized;
-            authorized = (boolean) session.getAttribute("Authorized");
+        if (session.getAttribute(AUTHORIZED) != null) {
+            boolean authorized = (boolean) session.getAttribute(AUTHORIZED);
             if (authorized) {
-                response.setContentType("text/html;charset=utf-8");
+                response.setContentType(CONTENT_TYPE);
                 String page = templateProcessor.getPage(ADMIN_PAGE_TEMPLATE, cache.getCacheInfo());
-                response.getWriter().println(page);
                 response.setStatus(HttpServletResponse.SC_OK);
+                response.getWriter().println(page);
                 return;
             }
         }
-
-        response.setContentType("text/html;charset=utf-8");
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(HttpServletResponse.SC_OK);
-        String log = (String) request.getSession().getAttribute("login");
-        String pass = (String) request.getSession().getAttribute("password");
-        String page = getPage(log, pass); //save to the page
+        if (session.getAttribute(AUTHORIZED) == null) {
+            session.setAttribute(AUTHORIZED, false);
+        }
+        boolean adminAuthorized = (boolean) session.getAttribute(AUTHORIZED);
+        String page = getPage(adminAuthorized); //save to the page
         response.getWriter().println(page);
-
-
     }
 }
