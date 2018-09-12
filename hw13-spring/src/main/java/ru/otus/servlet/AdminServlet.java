@@ -3,16 +3,12 @@ package ru.otus.servlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.cache.CacheEngine;
 import ru.otus.datasets.AddressDataSet;
 import ru.otus.datasets.PhoneDataSet;
 import ru.otus.datasets.UserDataSet;
 import ru.otus.dbservice.DBService;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AdminServlet extends HttpServlet {
+public class AdminServlet extends BaseServlet {
 
     private static final String ADMIN_PAGE_TEMPLATE = "admin.html";
     private static final String ADMIN_PAGE_TEMPLATE_UNAUTHORIZED = "unauthorized.html";
@@ -41,12 +37,6 @@ public class AdminServlet extends HttpServlet {
 
     @Autowired
     private DBService dbService;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-    }
 
     private String getPage(boolean adminAuthorized) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
