@@ -1,18 +1,17 @@
-package ru.otus;
-
 import org.apache.log4j.Logger;
+import org.junit.Test;
+import ru.otus.MergeSort;
 
 import java.util.Arrays;
 
-/**
- * Created by knazarov.
- */
+import static org.junit.Assert.assertArrayEquals;
 
-public class Main {
+public class TestSort {
 
-    private final static Logger logger = Logger.getLogger(Main.class);
+    private final static Logger logger = Logger.getLogger(TestSort.class);
 
-    public static void main(String... args) throws InterruptedException {
+    @Test
+    public void testSort() throws InterruptedException {
         //Из за того что массив делится на 4 части  размер массива должен быть кратен 4
         int[] testArray = new int[12];
         for (int i = 0; i < testArray.length; i++) {
@@ -27,5 +26,8 @@ public class Main {
 
         logger.info("sort 1: " + Arrays.toString(sortedArray));
         logger.info("sort 2: " + Arrays.toString(sortedCopy));
+
+        assertArrayEquals(sortedArray, sortedCopy);
     }
+
 }
