@@ -18,17 +18,17 @@ public class MergeSort {
         int[] subArray3 = new int[subArrayLength];
         int[] subArray4 = new int[subArrayLength];
 
-        //разделим первоначальный массив на 4 части
+        //разделим  массив на 4 части
         System.arraycopy(array, 0, subArray1, 0, subArrayLength);
         System.arraycopy(array, subArrayLength, subArray2, 0, subArrayLength);
         System.arraycopy(array, subArrayLength * 2, subArray3, 0, subArrayLength);
         System.arraycopy(array, subArrayLength * 3, subArray4, 0, subArrayLength);
 
         //проведем сортировку частей в 4 потоках
-        Sort worker1 = new Sort(subArray1);
-        Sort worker2 = new Sort(subArray2);
-        Sort worker3 = new Sort(subArray3);
-        Sort worker4 = new Sort(subArray4);
+        Thread worker1 = new Thread(new Sort(subArray1));
+        Thread worker2 = new Thread(new Sort(subArray2));
+        Thread worker3 = new Thread(new Sort(subArray3));
+        Thread worker4 = new Thread(new Sort(subArray4));
         worker1.start();
         worker2.start();
         worker3.start();
@@ -42,7 +42,7 @@ public class MergeSort {
         logger.info(Arrays.toString(subArray3));
         logger.info(Arrays.toString(subArray4));
 
-        //объединим снова части массива
+        //объединим части массива
         System.arraycopy(subArray1, 0, sortedArray, 0, subArrayLength);
         System.arraycopy(subArray2, 0, sortedArray, subArrayLength, subArrayLength);
         System.arraycopy(subArray3, 0, sortedArray, subArrayLength * 2, subArrayLength);
@@ -52,19 +52,6 @@ public class MergeSort {
         new ArraySort().mergeSort(sortedArray);
 
         return sortedArray;
-    }
-
-
-    class Sort extends Thread {
-        private int[] array;
-
-        public Sort(int[] array) {
-            this.array = array;
-        }
-
-        public void run() {
-            new ArraySort().mergeSort(array);
-        }
     }
 }
 
