@@ -8,6 +8,6 @@ public class Sort implements Runnable {
     }
 
     public void run() {
-        new ArraySort().mergeSort(array);
+        ArraySort.mergeSort(array);
     }
 }

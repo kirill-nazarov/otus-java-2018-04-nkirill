@@ -9,12 +9,8 @@ public class Main {
     private final static Logger logger = Logger.getLogger(Main.class);
 
     public static void main(String... args) throws InterruptedException {
-        //Из за того что массив делится на 4 части  размер массива должен быть кратен 4
-        int[] testArray = new int[20];
-        if (testArray.length % 4 != 0) {
-            throw new UnsupportedOperationException("Please provide array with length divisible by 4." +
-                    " You provided array with length" + testArray.length);
-        }
+        int[] testArray = new int[30];
+
         for (int i = 0; i < testArray.length; i++) {
             testArray[i] = (int) (Math.random() * 100);
         }

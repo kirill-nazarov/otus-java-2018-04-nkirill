@@ -2,7 +2,9 @@ package ru.otus;
 
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MergeSort {
 
@@ -10,46 +12,57 @@ public class MergeSort {
 
     public int[] sortArray(int[] array) throws InterruptedException {
 
-        int subArrayLength = array.length / 4;
         int[] sortedArray = new int[array.length];
 
-        int[] subArray1 = new int[subArrayLength];
-        int[] subArray2 = new int[subArrayLength];
-        int[] subArray3 = new int[subArrayLength];
-        int[] subArray4 = new int[subArrayLength];
+        //в зависимисти от длины входного массива количество потоков будет от 1 до 4
+        int threadsNum = 1;
+        if (array.length % 4 == 0) {
+            threadsNum = 4;
+        } else if (array.length % 3 == 0) {
+            threadsNum = 3;
+        } else if (array.length % 2 == 0) {
+            threadsNum = 2;
+        }
 
-        //разделим  массив на 4 части
-        System.arraycopy(array, 0, subArray1, 0, subArrayLength);
-        System.arraycopy(array, subArrayLength, subArray2, 0, subArrayLength);
-        System.arraycopy(array, subArrayLength * 2, subArray3, 0, subArrayLength);
-        System.arraycopy(array, subArrayLength * 3, subArray4, 0, subArrayLength);
+        logger.info("Threads number: " + threadsNum);
+
+        int subArrayLength = array.length / threadsNum;
+
+        //Составим список для разделения на подмассивы
+        List<int[]> subArrayList = new ArrayList<>();
+        for (int i = 0; i < threadsNum; i++) {
+            subArrayList.add(new int[subArrayLength]);
+        }
+
+
+        //разделим  массив на threadsNum частей
+        for (int i = 0; i < threadsNum; i++) {
+            System.arraycopy(array, subArrayLength * i, subArrayList.get(i), 0, subArrayLength);
+        }
 
         //проведем сортировку частей в 4 потоках
-        Thread worker1 = new Thread(new Sort(subArray1));
-        Thread worker2 = new Thread(new Sort(subArray2));
-        Thread worker3 = new Thread(new Sort(subArray3));
-        Thread worker4 = new Thread(new Sort(subArray4));
-        worker1.start();
-        worker2.start();
-        worker3.start();
-        worker4.start();
-        worker1.join();
-        worker2.join();
-        worker3.join();
-        worker4.join();
-        logger.info(Arrays.toString(subArray1));
-        logger.info(Arrays.toString(subArray2));
-        logger.info(Arrays.toString(subArray3));
-        logger.info(Arrays.toString(subArray4));
+        List<Thread> threads = new ArrayList<>();
+        for (int i = 0; i < threadsNum; i++) {
+            threads.add(new Thread(new Sort(subArrayList.get(i))));
+        }
+        for (int i = 0; i < threadsNum; i++) {
+            threads.get(i).start();
+        }
+        for (int i = 0; i < threadsNum; i++) {
+            threads.get(i).join();
+        }
+
+        for (int i = 0; i < threadsNum; i++) {
+            logger.info(Arrays.toString(subArrayList.get(i)));
+        }
 
         //объединим части массива
-        System.arraycopy(subArray1, 0, sortedArray, 0, subArrayLength);
-        System.arraycopy(subArray2, 0, sortedArray, subArrayLength, subArrayLength);
-        System.arraycopy(subArray3, 0, sortedArray, subArrayLength * 2, subArrayLength);
-        System.arraycopy(subArray4, 0, sortedArray, subArrayLength * 3, subArrayLength);
+        for (int i = 0; i < threadsNum; i++) {
+            System.arraycopy(subArrayList.get(i), 0, sortedArray, subArrayLength * i, subArrayLength);
+        }
 
         //отсортируем объединенный массив
-        new ArraySort().mergeSort(sortedArray);
+        ArraySort.mergeSort(sortedArray);
 
         return sortedArray;
     }
