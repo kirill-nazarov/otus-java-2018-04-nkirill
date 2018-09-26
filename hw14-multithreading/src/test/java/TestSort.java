@@ -11,7 +11,7 @@ public class TestSort {
     private final static Logger logger = Logger.getLogger(TestSort.class);
 
     @Test
-    public void testSortFourThreas() throws InterruptedException {
+    public void testSortFourThreads() throws InterruptedException {
         int[] testArray = new int[20];
         for (int i = 0; i < testArray.length; i++) {
             testArray[i] = (int) (Math.random() * 100);
