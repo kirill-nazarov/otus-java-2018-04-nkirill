@@ -40,7 +40,7 @@ public class MergeSort {
             System.arraycopy(array, subArrayLength * i, subArrayList.get(i), 0, subArrayLength);
         }
 
-        //проведем сортировку частей в 4 потоках
+        //проведем сортировку частей в threadsNum потоках
         List<Thread> threads = new ArrayList<>();
         for (int i = 0; i < threadsNum; i++) {
             threads.add(new Thread(new Sort(subArrayList.get(i))));
