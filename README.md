@@ -1,4 +1,4 @@
-# Курс "Разработчик Java" в Otus.ru
+# Курс "Разработчик Java" в Otus.ru Java Developer Course
 Группа 2018-04
 
 ### Студент ###
